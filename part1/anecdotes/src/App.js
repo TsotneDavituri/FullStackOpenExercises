@@ -20,23 +20,43 @@ const App = () => {
   }
   const [selected, setSelected] = useState(0)
   
+  
   const handleClick = () => {
-    console.log('clicked the button')
     setSelected(getRandomInt(anecdotes.length))
   }
 
-  const points = Array[anecdotes.length].fill(0)
-  const copy = [...points]
+  const [votes, setVotes] = useState(new Uint8Array(anecdotes.length))
+
+
+  const copy = [...votes]
+
+  const increaseVote = () => {
+    copy[selected] += 1
+    setVotes(copy)
+  }
+
+  const index = copy.indexOf(Math.max(...copy))
 
   return (
     <div>
+      <p></p>
+      <h1>Anecdote of the day:</h1>
       <div>{anecdotes[selected]}</div>
-      <Button click={copy[selected]++} text="vote" />
-      {console.log(copy[selected])}
+      <p></p>
+      <Button click={increaseVote} text="Vote" />
       <Button click={handleClick} text="Next Anecdote"/>
+      <p></p>
+      
+      <p></p>
+      <h1>Anecdote with the most votes:</h1>
+      <p></p>
+      <div>{anecdotes[index]}</div>
+      <p></p>
+      <div>Has {copy[selected]} votes</div>
     </div>
   )
 }
+
 
 /* () => getRandomAnecdote(getRandomInt(anecdotes.length)) */
 
