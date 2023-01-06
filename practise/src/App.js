@@ -1,51 +1,49 @@
-
 import { useState } from 'react'
+import Note from './components/Note'
+
+const App = (props) => {
+  const [notes, setNotes] = useState(props.notes)
+  const [newNote, setNewNote] = useState('') 
+  const [showAll, setShowAll] = useState(true)
+
+  const notesToShow = showAll
+    ? notes
+    : notes.filter(note => note.important)
 
 
-const History = (props) => {
-  console.log(props)
-  if (props.allClicks.length === 0) {
-    return (
+  const addNote = (event) => {
+    event.preventDefault()
+    const noteObject = {
+      content: newNote,
+      date: new Date().toISOString(),
+      important: Math.random() < 0.5,
+      id: notes.length + 1,
+    }
+  
+    setNotes(notes.concat(noteObject))
+    setNewNote('')
+  }
+
+  const handleNoteChange = (event) => {
+    console.log(event.target.value)
+    setNewNote(event.target.value)
+  }
+
+  return (
+    <div>
+      <h1>Notes</h1>
       <div>
-        the app is used by pressing the buttons
+        <button onClick={() => setShowAll(!showAll)}>
+          show {showAll ? 'important' : 'all' }
+        </button>
       </div>
-    )
-  }
-  return (
-    <div>
-      button press history: {props.allClicks.join(' ')}
+      <ul>
+        {notesToShow.map(note =>
+          <Note key={note.id} note={note} />
+        )}
+      </ul> 
     </div>
   )
 }
 
-const Button = (props) => (
-  <button onClick={props.handleClick}>
-    {props.text}
-  </button>
-)
-
-
-const App = () => {
-  const [value, setValue] = useState(10)
-  
-  const setToValue = (newValue) => () => {
-    console.log('value now', newValue)  // print the new value to console
-    setValue(newValue)
-  }
-
-  const setToValueNoFunction = (newValue) => {
-    setValue(newValue)
-  }
-  
-  return (
-    <div>
-      {value}
-      <Button handleClick={setToValue(1000)} text="thousand"/>
-      <button onClick={setToValue(0)}>reset</button>
-      <button onClick={setToValue(value + 11)}>increment</button>
-      <button onClick={() => setToValueNoFunction(value + 100)}> hundred </button>
-    </div>
-  )
-}
-
-export default App;
+export default App 
