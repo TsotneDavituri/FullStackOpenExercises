@@ -1,24 +1,22 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import personService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
-  
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
-    axios
-    .get('http://localhost:3001/persons')
+    personService
+    .getAll()
     .then((response) => {
-      setPersons(response.data)
+      setPersons(response)
     })
   },[])
 
   const addPerson = (event) => {
     event.preventDefault()
-
     const personObject = {
       name: newName,
       number: newNumber,
@@ -28,8 +26,12 @@ const App = () => {
     if (persons.some(person => person.name.toUpperCase() === newName.toUpperCase())) {
       alert(`${newName} is already added to the phonebook`)
     } else {
-      setPersons(persons.concat(personObject))
-      setNewName('')
+      personService
+      .create(personObject)
+      .then(response => {
+        setPersons(persons.concat(response))
+        setNewName('')
+      })
     }
   }
 
@@ -91,7 +93,9 @@ const FilteredPersonList = (props) => {
   return (
     <div>
       {filteredPersons.map(person => (
-        <p key={person.id}>{person.name} {person.number}</p>
+        <>
+          <p key={person.id}>{person.name} {person.number} <button type="submit">delete</button></p>
+        </>
       ))}
     </div>
   )
