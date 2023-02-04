@@ -47,6 +47,14 @@ const App = () => {
     setFilter(event.target.value)
   }
 
+  const handleDelete = (id) => {
+    personService
+    .deletePerson(id)
+    .then(() => {
+      setPersons(persons.filter(person => person.id !== id))
+    })
+  }
+
   const personFormProps = {
     addPerson: addPerson,
     newName: newName,
@@ -62,7 +70,7 @@ const App = () => {
       <h2>Add new</h2>
       <PersonForm {...personFormProps}/>
       <h2>Numbers</h2>
-      <FilteredPersonList persons={persons} filter={filter}/>
+      <FilteredPersonList persons={persons} filter={filter} handleDelete={handleDelete}/>
     </div>
   )
 }
@@ -85,17 +93,37 @@ const PersonForm = ({ addPerson, newName, handleNameChange, newNumber, handleNum
   )
 }
 
+const Person = (props) => {
+  return (
+    <span key={props.person.id}> {props.person.name} {props.person.number} </span>
+  )
+}
+
+const DeleteButton = (props) => {
+  const confirmDeletion = () => {
+    if (window.confirm("Do you want to delete this user?")) {
+      props.handleDelete(props.person.id)
+    }
+  }
+  console.log("delete button props -->", props)
+  return(
+    <button onClick={confirmDeletion} type="submit">delete</button>
+  )
+}
+
 const FilteredPersonList = (props) => {
   const filteredPersons = props.persons.filter(person =>
     person.name.toLowerCase().includes(props.filter.toLowerCase())
   )
-
   return (
     <div>
       {filteredPersons.map(person => (
-        <>
-          <p key={person.id}>{person.name} {person.number} <button type="submit">delete</button></p>
-        </>
+        <div key={person.id}>
+          <p>
+            <Person person={person}/>
+            <DeleteButton person={person} handleDelete={() => props.handleDelete(person.id)}/>
+          </p>
+        </div>
       ))}
     </div>
   )
