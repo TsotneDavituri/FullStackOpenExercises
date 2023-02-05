@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import personService from './services/persons'
+import './index.css'
 
 // Main component that renders the phonebook
 const App = () => {
@@ -8,6 +9,11 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  // the next 3 variables hold the state of the notifications, 
+  const [changedNumberName, setChangedNumberName] = useState(null)
+  const [changedNumber, setChangedNumber] = useState(null)
+  const [addNotificationName, setAddNotificationName] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
 
   // use effect hook to fetch list of persons from the server
@@ -48,6 +54,18 @@ const App = () => {
               }))
               setNewName('')
               setNewNumber('')
+              setChangedNumberName(personObject.name)
+              setChangedNumber(personObject.number)
+              setTimeout(() => {
+                setChangedNumberName(null)
+                setChangedNumber(null)
+              }, 3000)
+            }).catch(error => {
+              // Error takes name as a variable to display the correct name
+              setErrorMessage(personObject.name)
+              setTimeout(() => {
+                setErrorMessage(null)
+              }, 3000)
             })
         }
       } else {
@@ -58,6 +76,16 @@ const App = () => {
             setPersons(persons.concat(response))
             setNewName('')
             setNewNumber('')
+            setAddNotificationName(personObject.name)
+            setTimeout(() => {
+              setAddNotificationName(null)
+            }, 3000)
+          }).catch(error => {
+            // Error takes name as a variable to display the correct name
+            setErrorMessage(personObject.name)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 3000)
           })
       }
     }
@@ -97,6 +125,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <AddNameNotification name={addNotificationName}/>
+      <ChangedNumber name={changedNumberName} number={changedNumber}/>
+      <ErrorMessage errorMessage={errorMessage} />
       <SearchFilter filter={filter} handleFilterChange={handleFilterChange} />
       <h2>Add new</h2>
       <PersonForm {...personFormProps} />
@@ -109,7 +140,7 @@ const App = () => {
 const SearchFilter = ({ filter, handleFilterChange }) => {
   return (
     <div>
-      filter names: <input value={filter} onChange={handleFilterChange}></input>
+      Filter names: <input value={filter} onChange={handleFilterChange}></input>
     </div>
   )
 }
@@ -117,9 +148,9 @@ const SearchFilter = ({ filter, handleFilterChange }) => {
 const PersonForm = ({ addPerson, newName, handleNameChange, newNumber, handleNumberChange }) => {
   return (
     <form onSubmit={addPerson}>
-      <div> name: <input type="text" value={newName} onChange={handleNameChange} /></div>
-      <div> number: <input value={newNumber} onChange={handleNumberChange} /></div>
-      <div><button type="submit">submit</button></div>
+      <div> Name: <input type="text" value={newName} onChange={handleNameChange} /></div>
+      <div> Number: <input value={newNumber} onChange={handleNumberChange} /></div>
+      <div><button type="submit">Submit</button></div>
     </form>
   )
 }
@@ -159,6 +190,42 @@ const FilteredPersonList = (props) => {
           </p>
         </div>
       ))}
+    </div>
+  )
+}
+
+const AddNameNotification = ({name}) => {
+  if (name === null) {
+    return null
+  }
+
+  return (
+    <div className='notification'>
+      Added {name}
+    </div>
+  )
+}
+
+const ChangedNumber = ({number, name}) => {
+  if (number === null) {
+    return null
+  }
+
+  return (
+    <div className='notification'>
+      Changed the number of {name} to {number}
+    </div>
+  )
+}
+
+const ErrorMessage = ({errorMessage}) => {
+  if (errorMessage === null) {
+    return null
+  }
+
+  return (
+    <div className='error'>
+      Information of {errorMessage} has already been removed from the server.
     </div>
   )
 }
