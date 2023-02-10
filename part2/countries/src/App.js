@@ -12,6 +12,7 @@ const App = () => {
   const baseUrl = 'https://restcountries.com/v3.1'
   const baseWeatherUrl = "http://api.openweathermap.org/data/2.5"
 
+  //test comment
   const getAll = () => {
     const request = axios.get(`${baseUrl}/all`)
     console.log(request)
