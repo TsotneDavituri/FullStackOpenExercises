@@ -1,0 +1,30 @@
+{
+  "name": "fullstackopenexcercises",
+  "version": "1.0.0",
+  "description": "this is where my fullstackopen excercises will be pushed to",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TsotneDavituri/FullStackOpenExcercises.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TsotneDavituri/FullStackOpenExcercises/issues"
+  },
+  "homepage": "https://github.com/TsotneDavituri/FullStackOpenExcercises#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
