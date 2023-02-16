@@ -33,8 +33,6 @@ const App = () => {
     setFilteredCountries(countryData.filter(country => country.name.common.toLowerCase().includes(event.target.value.toLowerCase())))
   }
 
-  console.log(weatherData)
-
   return (
     <>
       Find Country: <input type="text" value={search} onChange={handleFilterChange} placeholder="Enter country" />
@@ -148,7 +146,6 @@ const Weatherinformation = ({ weatherData, country, index }) => {
           {weatherInfo.weatherIcon && (
             <img src={weatherInfo.weatherIcon} alt="weather" />
           )}
-          {console.log(weatherInfo.temp)}
           {weatherInfo.windSpeed && (
             <div>Windspeed: {weatherInfo.windSpeed} m/s</div>
           )}
