@@ -35,7 +35,9 @@ const App = () => {
       const personObject = {
         name: newName,
         number: newNumber
-      }
+      }.catch(error => {
+        console.log(error.response.data.error)
+      })
       // check to see if the person already is in the phonebook
       if (persons.some(person => person.name.toUpperCase() === newName.toUpperCase())) {
         if (window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
