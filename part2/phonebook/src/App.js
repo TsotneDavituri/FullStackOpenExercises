@@ -35,9 +35,7 @@ const App = () => {
       const personObject = {
         name: newName,
         number: newNumber
-      }.catch(error => {
-        console.log(error.response.data.error)
-      })
+      }
       // check to see if the person already is in the phonebook
       if (persons.some(person => person.name.toUpperCase() === newName.toUpperCase())) {
         if (window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
@@ -63,8 +61,8 @@ const App = () => {
                 setChangedNumber(null)
               }, 3000)
             }).catch(error => {
-              // Error takes name as a variable to display the correct name
-              setErrorMessage(personObject.name)
+              // Show error message in case it doesnt work
+              setErrorMessage(error.response.data.error)
               setTimeout(() => {
                 setErrorMessage(null)
               }, 3000)
@@ -83,8 +81,9 @@ const App = () => {
               setAddNotificationName(null)
             }, 3000)
           }).catch(error => {
-            // Error takes name as a variable to display the correct name
-            setErrorMessage(personObject.name)
+            // Show error message in case it doesnt work
+            setErrorMessage(error.response.data.error)
+            console.log(error.toString())
             setTimeout(() => {
               setErrorMessage(null)
             }, 3000)
@@ -227,7 +226,7 @@ const ErrorMessage = ({errorMessage}) => {
 
   return (
     <div className='error'>
-      Information of {errorMessage} has already been removed from the server.
+       {errorMessage}
     </div>
   )
 }
