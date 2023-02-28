@@ -5,31 +5,23 @@ const dummy = (blogs) => {
   }
 
 const totalLikes = (blogs) => {
-    let sum = 0
-
-    for (i in blogs) {
-        sum += blogs[i].likes
-    }
-
+    const sum = Object.values(blogs).reduce((likes, blog) => {
+        return likes += blog.likes
+    }, 0)
     return sum
 }
 
 const favoriteBlog = (blogs) => {
-    let sum = 0
-    let blog = {}
-    for (i in blogs) {
-        if (sum < blogs[i].likes) {
-            sum = blogs[i].likes
-        }
-    }
 
-    for (i in blogs) {
-        if (sum === blogs[i].likes) {
-            blog = blogs[i]
-        }
-    }
+    const highest = Object.values(blogs).reduce(( counter, blog) =>  {
+        return counter < blog.likes ? blog.likes : counter
+    }, 0)
 
-    return blog
+    const favorite = blogs.filter(blog => {
+        return blog.likes === highest
+    })
+
+    return favorite[0]
 }
 
 const mostBlogs = (blogs) => {
