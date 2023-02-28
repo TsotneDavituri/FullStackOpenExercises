@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 const dummy = (blogs) => {
     return 1
   }
@@ -21,7 +23,7 @@ const favoriteBlog = (blogs) => {
         }
     }
 
-    for(i in blogs) {
+    for (i in blogs) {
         if (sum === blogs[i].likes) {
             blog = blogs[i]
         }
@@ -31,21 +33,40 @@ const favoriteBlog = (blogs) => {
 }
 
 const mostBlogs = (blogs) => {
-    let MichaelChan = 0
-    let EdgsarDijkstra = 0
-    let RobertMartin = 0
+    const countAuthors = blogs.reduce((counter, blog) => {
+        counter[blog.author] = (counter[blog.author] || 0) + 1
+        return counter
+    }, {})
 
-    for (i in blogs) {
-        if (blogs[i].author) {
-            //todo
-        }
-    }
+    const biggestNumber = Object.values(countAuthors).reduce((counter, value) => {
+        return counter > value ? counter : value
+    }, 0)
+
+    const most = Object.entries(countAuthors)
+        .filter(([key, value]) => value === biggestNumber)
+        .map(([key, value]) => ({ author: key, blogs: value }))
+
+    return most
+
 }
 
 const mostLikes = (blogs) => {
+    const countLikes = blogs.reduce((counter, blog) => {
+        counter[blog.author] = (counter[blog.author] || 0) + blog.likes
+        return counter
+    }, {})
 
+    const biggestNumber = Object.values(countLikes).reduce((counter, value) => {
+        return counter > value ? counter : value
+    }, 0)
+
+    const mostLikes = Object.entries(countLikes)
+        .filter(([key, value]) => value === biggestNumber)
+        .map(([key, value]) => ({author: key, likes: value}))
+
+    return mostLikes
 }
   
-  module.exports = {
-    dummy, totalLikes, favoriteBlog, mostBlogs
-  }
+module.exports = {
+    dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
+}
