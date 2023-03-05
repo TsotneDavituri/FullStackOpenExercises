@@ -57,5 +57,5 @@ const blogsInDb = async () => {
 }
 
 module.exports = {
-    listWithManyBlogs
+    listWithManyBlogs, blogsInDb
 }
