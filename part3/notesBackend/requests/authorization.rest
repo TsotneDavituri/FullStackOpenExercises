@@ -1,8 +1,8 @@
 post http://localhost:8080/api/notes
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImppbW15IiwiaWQiOiI2NDA3MDc3OTM2M2I4M2I5NTFiYjA5ZGMiLCJpYXQiOjE2NzgyNjUyOTR9.j8XLYAFyfsrPDmCWYgvGbN8WHdM_765pvMS_3DeIuLk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImppbW15IiwiaWQiOiI2NDA3MDc3OTM2M2I4M2I5NTFiYjA5ZGMiLCJpYXQiOjE2NzgyNzk3ODQsImV4cCI6MTY3ODI4MzM4NH0.9W1z5uRRBw9EJTCOYVn5kUrzr9f5CqxLXLwDVzKqSg4
 
 {
-    "content": "hello world",
+    "content": "jimmy says hi",
     "important": true
 }

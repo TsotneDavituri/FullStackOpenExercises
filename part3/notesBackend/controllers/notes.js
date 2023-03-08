@@ -2,8 +2,6 @@ const notesRouter = require('express').Router()
 const Note = require('../models/note')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
-const path = require('path')
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 
 const getTokenFrom = request => {
   const authorization = request.get('authorization')
@@ -31,7 +29,7 @@ notesRouter.post('/', async (request, response) => {
   const body = request.body
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   console.log(decodedToken)
-  
+
   if (!decodedToken.id) {    
     return response.status(401).json({ error: 'token invalid' })  
   }  
