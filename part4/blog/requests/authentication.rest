@@ -1,8 +1,10 @@
-post http://localhost:3003/api/blogs
+post http://localhost:3005/api/blogs
 Content-Type: application/json
-Authorization: Bearer <token>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN1cGVydXNlciIsImlkIjoiNjQwYWY1Y2NjZjg4MWFjMjEzMDI2NWI5IiwiaWF0IjoxNjc4NDQxNjQxLCJleHAiOjE2Nzg0NDUyNDF9.rheGzXsfSaU_Bt5Tto-FzyBZ265u99mUYW5gzMV48tk
 
 {
-    "content": "jimmy says hi",
-    "important": true
+    "title": "this is hard as fuck fuck fuck fuck",
+    "author": "asfasfasfasf",
+    "url": "sdagsdfg",
+    "likes": "5"
 }
