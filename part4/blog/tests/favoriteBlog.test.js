@@ -6,6 +6,6 @@ describe('favorite blogs', () => {
 
   test('The favorite blog in this list calculated correctly', () => {
     const result = listHelper.favoriteBlog(listWithManyBlogs)
-    expect(result).toEqual(listWithManyBlogs[2])
+    expect(result).toEqual(listWithManyBlogs[3])
   })
 })
