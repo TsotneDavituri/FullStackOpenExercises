@@ -11,7 +11,6 @@ const { request } = require('../app')
 
 const api = supertest(app)
 let token
-let id
 
 beforeEach(async () => {
     await Blog.deleteMany({})
@@ -27,8 +26,6 @@ beforeEach(async () => {
         })
 
     token = response.body.token
-    id = response.body.id
-    console.log(response.body)
 })
 
 describe('Default blogs saved', () => {
@@ -87,6 +84,21 @@ describe('addition of a new blog', () => {
         )
     })
 
+    test('401 unauthorized if token is not provided', async () => {
+        const newBlog = {
+            title: "Harry Potter and the Prisoner of Azkaban",
+            author: "J.K. Rowling",
+            url: "xd",
+            likes: 10
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(401)
+            .expect('Content-Type', /application\/json/)
+    })
+
     test('Likes property isnt missing', async () => {
         const noLike = {
             title: "50 shades of grey",
@@ -139,7 +151,6 @@ describe('addition of a new blog', () => {
 describe('deletion of a blog', () => {
     test('succeeds with status code 204 if id is valid', async () => {
         const blogsAtStart = await helper.blogsInDb()
-        const blogs = await Blog.find({})
 
         const blogToDelete = {
             title: 'New blog',
@@ -148,8 +159,6 @@ describe('deletion of a blog', () => {
             likes: 10
           }
 
-          console.log(blogToDelete)
-
         await api
             .post('/api/blogs')
             .send(blogToDelete)
@@ -157,18 +166,15 @@ describe('deletion of a blog', () => {
             .expect(201)
             .expect('Content-Type', /application\/json/)
 
-        console.log(blogToDelete)
-
         const blogsAfterPost = await helper.blogsInDb()
         expect(blogsAfterPost).toHaveLength(blogsAtStart.length + 1)
 
-        console.log(blogsAfterPost)
+        const blogToDeleteId = blogsAfterPost[blogsAfterPost.length -1].id
 
         await api
-            .delete(`/api/blogs/${blogToDelete.id}`)
+            .delete(`/api/blogs/${blogToDeleteId}`)
             .set('Authorization', `Bearer ${token}`)
             .expect(204)
-            .catch((error) => console.error(error.message))
 
         const blogsAtEnd = await helper.blogsInDb()
 
@@ -188,7 +194,7 @@ describe('Editing a blog', () => {
 
 
         const updatedBlog = {
-            title: "React patterns",
+            title: "50 shades of grey",
             author: "E. L. James",
             url: "https://www.eljamesauthor.com",
             likes: 0
@@ -197,6 +203,7 @@ describe('Editing a blog', () => {
          await api
          .put(`/api/blogs/${blogToUpdate.id}`)
          .send(updatedBlog)
+         .set('Authorization', `Bearer ${token}`)
          .expect('Content-Type', /application\/json/)
 
         const afterUpdate = await helper.blogsInDb()
@@ -261,6 +268,55 @@ describe('when there is initially one user at db', () => {
       const usersAtEnd = await helper.usersInDb()
       expect(usersAtEnd).toHaveLength(usersAtStart.length)
     })
+
+    test('user with short username is not created', async () => {
+        const usersAtStart = await helper.usersInDb()
+  
+        const newUser = {
+          username: 'ro',
+          name: 'Superuser',
+          password: 'salainen',
+        }
+    
+        const result = await api
+          .post('/api/users')
+          .send(newUser)
+          .set('Authorization', `Bearer ${token}`)
+          .expect(400)
+          .expect('Content-Type', /application\/json/)
+
+          console.log(result.body.error)
+    
+        expect(result.body.error).toContain('`username` (`ro`) is shorter than the minimum allowed length (3)')
+    
+        const usersAtEnd = await helper.usersInDb()
+        expect(usersAtEnd).toHaveLength(usersAtStart.length)
+    })
+
+    test('user with short password is not created', async () => {
+        const usersAtStart = await helper.usersInDb()
+  
+        const newUser = {
+          username: 'rooot',
+          name: 'Superuser',
+          password: 'sa',
+        }
+    
+        const result = await api
+          .post('/api/users')
+          .send(newUser)
+          .set('Authorization', `Bearer ${token}`)
+          .expect(400)
+          .expect('Content-Type', /application\/json/)
+
+          console.log(result.body.error)
+    
+        expect(result.body.error).toContain('password should be 3 or more characters')
+    
+        const usersAtEnd = await helper.usersInDb()
+        expect(usersAtEnd).toHaveLength(usersAtStart.length)
+    })
+
   })
 
 afterAll(async () => {
