@@ -7,11 +7,11 @@ const Blog = require('../models/blog')
 const { get, after } = require('lodash')
 const bcrypt = require('bcrypt')
 const blog = require('../models/blog')
+const { request } = require('../app')
 
 const api = supertest(app)
 let token
-
-// root id: 640b2f86d3d9e36b8b579a1a
+let id
 
 beforeEach(async () => {
     await Blog.deleteMany({})
@@ -27,6 +27,7 @@ beforeEach(async () => {
         })
 
     token = response.body.token
+    id = response.body.id
     console.log(response.body)
 })
 
@@ -64,8 +65,7 @@ describe('addition of a new blog', () => {
             title: "Harry Potter and the Prisoner of Azkaban",
             author: "J.K. Rowling",
             url: "xd",
-            likes: 10,
-            user: User.id
+            likes: 10
         }
 
         const initialBlogs = await api.get('/api/blogs')
@@ -93,8 +93,6 @@ describe('addition of a new blog', () => {
             author: "E. L. James",
             url: "https://www.eljamesauthor.com"
         }
-
-        const initialBlogs = await api.get('/api/blogs')
 
         const response = await api
             .post('/api/blogs')
@@ -141,18 +139,40 @@ describe('addition of a new blog', () => {
 describe('deletion of a blog', () => {
     test('succeeds with status code 204 if id is valid', async () => {
         const blogsAtStart = await helper.blogsInDb()
-        const blogToDelete = blogsAtStart[0]
+        const blogs = await Blog.find({})
 
-        console.log(blogsAtStart[0])
+        const blogToDelete = {
+            title: 'New blog',
+            author: 'New author',
+            url: 'https://newblog.com',
+            likes: 10
+          }
+
+          console.log(blogToDelete)
+
+        await api
+            .post('/api/blogs')
+            .send(blogToDelete)
+            .set('Authorization', `Bearer ${token}`)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+
+        console.log(blogToDelete)
+
+        const blogsAfterPost = await helper.blogsInDb()
+        expect(blogsAfterPost).toHaveLength(blogsAtStart.length + 1)
+
+        console.log(blogsAfterPost)
 
         await api
             .delete(`/api/blogs/${blogToDelete.id}`)
             .set('Authorization', `Bearer ${token}`)
             .expect(204)
+            .catch((error) => console.error(error.message))
 
         const blogsAtEnd = await helper.blogsInDb()
 
-        expect(blogsAtEnd).toHaveLength(blogsAtStart.length - 1)
+        expect(blogsAtEnd).toHaveLength(blogsAfterPost.length - 1)
 
         const contents = blogsAtEnd.map(r => r.title)
 

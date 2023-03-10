@@ -2,15 +2,6 @@ const Blog = require('../models/blog')
 
 const listWithManyBlogs = [
       {
-        _id: "640b2ce8b54a4c0a591f8662",
-        title: "this is hard as fuck fuck fuck fuck",
-        author: "asfasfasfasf",
-        url: "sdagsdfg",
-        likes: 5,
-        user: "640b2f86d3d9e36b8b579a1a",
-        __v: 0
-      },
-      {
         _id: "5a422a851b54a676234d17f7",
         title: "React patterns",
         author: "Michael Chan",

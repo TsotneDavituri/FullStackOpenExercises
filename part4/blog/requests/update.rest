@@ -1,0 +1,10 @@
+PUT http://localhost:3005/api/blogs/640b2ce8b54a4c0a591f8662
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyIiwiaWQiOiI2NDBiMmI0YmE0ZDI3MGQ1MWVjZjA5OTQiLCJpYXQiOjE2Nzg0NTM5NjUsImV4cCI6MTY3ODQ1NzU2NX0.uV-U5TE46dZ-sVvN1exgXugtMNJcr-jfdDSnKY6dYFs
+
+{
+    "title": "this is hard as fuck fuck fuck fuck",
+    "author": "asfasfasfasf",
+    "url": "sdagsdfg",
+    "likes": "5"
+}

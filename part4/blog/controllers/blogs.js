@@ -40,6 +40,11 @@ blogsRouter.delete('/:id', async (request, response) => {
   const user = request.user
   const blog = await Blog.findById(request.params.id)
 
+  if (!blog) {
+    response.status(404).json({ error: 'blog not found' })
+    return
+  }
+
   if (user._id.toString() === blog.user._id.toString()) {
     await Blog.findByIdAndRemove(request.params.id)
     response.status(204).end()
