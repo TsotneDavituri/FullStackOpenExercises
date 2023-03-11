@@ -2,26 +2,30 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import './index.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
+  const [notifiction, setNotification] = useState(null)
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
     )  
-  }, [])
+  }, [blogs])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    console.log('User object in local storage:', loggedUserJSON)
-    console.log(loggedUserJSON)
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
@@ -37,14 +41,9 @@ const App = () => {
         username, password,
       })
 
-      console.log('User logged in:', user)
-
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       )
-      
-      console.log(window.localStorage)
-      console.log('Logged in user stored in local storage:', user)
 
       blogService.setToken(user.token)
       setUser(user)
@@ -58,10 +57,40 @@ const App = () => {
     }
   }
 
+  const handleCreation = async (event) => {
+    event.preventDefault()
+    try {
+      const newBlog = {
+        title,
+        author,
+        url
+      }
+
+      await blogService.create(newBlog)
+
+      blogService.setToken(user.token)
+      setAuthor('')
+      setTitle('')
+      setUrl('')
+      
+      setNotification(`Creation succeeded!`)
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+
+    } catch (exception) {
+      setErrorMessage('wrong request')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   if (user === null) {
     return (
       <div>
         <h2>Log in to application</h2>
+        <ErrorNotification message={errorMessage}/>
         <form onSubmit={handleLogin}>
           <div>
             username: 
@@ -91,24 +120,39 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <h3>{user.name} is logged in</h3>
-      <button>logout</button>
-
+      <ErrorNotification message={errorMessage}/>
+      <Notification message={notifiction}/>
+      <div>{user.name} is logged in
+        <button onClick={() => {
+          window.localStorage.removeItem('loggedBlogappUser')
+          window.location.reload()
+        }}>logout</button>
+      </div>
       <h2>Create new</h2>
-      <form>
+      <form onSubmit={handleCreation}>
         <div>
           title:
-          <input type="text" name="title">
+          <input type="text" 
+          name="title" 
+          value={title}
+          onChange={({ target }) => setTitle(target.value)}>
           </input>
         </div>
         <div>
           author:
-          <input type="text" name="author">
+          <input type="text" 
+          name="author" 
+          value={author}
+          onChange={({ target }) => setAuthor(target.value)}>
           </input>
         </div>
         <div>
           url:
-          <input type="text" name="url">
+          <input 
+          type="text" 
+          name="url" 
+          value={url}
+          onChange={({ target }) => setUrl(target.value)}>
           </input>
         </div>
         <button type="submit">submit</button>
@@ -116,6 +160,30 @@ const App = () => {
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
+    </div>
+  )
+}
+
+const ErrorNotification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className='error'>
+      {message}
+    </div>
+  )
+}
+
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className='notification'>
+      {message}
     </div>
   )
 }
