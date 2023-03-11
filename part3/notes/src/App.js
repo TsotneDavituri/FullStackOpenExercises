@@ -12,7 +12,7 @@ const Footer = () => {
  return (   
    <div style={footerStyle}>      
     <br />      
-    <em>Note app, Department of Computer Science, University of Helsinki 2022</em>   
+    <em>Note app, Department of Computer Science, University of Helsinki 2023</em>   
    </div> 
    )
   }
@@ -22,6 +22,8 @@ const App = () => {
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState('some error happened...')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('') 
 
   useEffect(() => {
     noteService
@@ -75,10 +77,36 @@ const App = () => {
       })
   }
 
+  
+  const handleLogin = (event) => {
+    event.preventDefault()
+    console.log('logging in with', username, password)
+  }
+
   return (
     <div>
-      <h1>Notes</h1>
+      <h1>Notes App</h1>
       <Notification message={errorMessage} />
+      <form onSubmit={handleLogin}>
+        <div>
+          username
+          <input
+            type="text"
+            value={username}
+            name="Username"
+            onChange={({ target }) => setUsername(target.value)} />
+        </div>
+        <div>
+          password
+          <input
+            type="password"
+            value={password}
+            name="Password"
+            onChange={({ target }) => setPassword(target.value)} />
+        </div>
+        <button type="submit">login</button>
+      </form>
+
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? 'important' : 'all'}
