@@ -3,6 +3,11 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './index.css'
+import Notification from './components/Notification'
+import ErrorNotification from './components/ErrorNotification'
+import LoginForm from './components/LoginForm'
+import Togglable from './components/Togglable'
+import CreateBlog from './components/CreateBlog'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -13,16 +18,11 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-
-
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
-  }, [blogs])
+      setBlogs(blogs)
+    )
+  }, [])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -57,133 +57,45 @@ const App = () => {
     }
   }
 
-  const handleCreation = async (event) => {
-    event.preventDefault()
-    try {
-      const newBlog = {
-        title,
-        author,
-        url
-      }
-
-      await blogService.create(newBlog)
-
-      blogService.setToken(user.token)
-      setAuthor('')
-      setTitle('')
-      setUrl('')
-      
-      setNotification(`Creation succeeded!`)
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
-
-    } catch (exception) {
-      setErrorMessage('wrong request')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
-    }
-  }
-
-  if (user === null) {
-    return (
-      <div>
-        <h2>Log in to application</h2>
-        <ErrorNotification message={errorMessage}/>
-        <form onSubmit={handleLogin}>
-          <div>
-            username: 
-            <input
-              type="text"
-              placeholder='enter username' 
-              value={username}
-              name="username"
-              onChange={({ target }) => setUsername(target.value)}
-              />
-          </div>
-          <div>
-            password: 
-            <input
-              type="password"
-              placeholder='enter password'
-              name="password" 
-              value={password}
-              onChange={({ target }) => setPassword(target.value)}/>
-          </div>
-          <button type='submit'>login</button>
-        </form>
-      </div>
-    )
-  }
-
   return (
     <div>
-      <h2>blogs</h2>
-      <ErrorNotification message={errorMessage}/>
-      <Notification message={notifiction}/>
-      <div>{user.name} is logged in
-        <button onClick={() => {
-          window.localStorage.removeItem('loggedBlogappUser')
-          window.location.reload()
-        }}>logout</button>
-      </div>
-      <h2>Create new</h2>
-      <form onSubmit={handleCreation}>
+
+      {!user &&
+        <LoginForm
+          errorMessage={errorMessage}
+          username={username}
+          password={password}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleLogin={handleLogin}
+        />
+      }
+
+      {user &&
         <div>
-          title:
-          <input type="text" 
-          name="title" 
-          value={title}
-          onChange={({ target }) => setTitle(target.value)}>
-          </input>
+          <h2>blogs</h2>
+          <ErrorNotification message={errorMessage} />
+          <Notification message={notifiction} />
+          <div>{user.name} is logged in
+            <button onClick={() => {
+              window.localStorage.removeItem('loggedBlogappUser')
+              window.location.reload()
+            }}>logout</button>
+          </div>
+
+          <Togglable buttonLabel="new blog">
+            <CreateBlog
+              user={user}
+              setNotification={setNotification}
+              setErrorMessage={setErrorMessage}
+            />
+          </Togglable>
+
+          {blogs.map(blog =>
+            <Blog key={blog.id} blog={blog} />
+          )}
         </div>
-        <div>
-          author:
-          <input type="text" 
-          name="author" 
-          value={author}
-          onChange={({ target }) => setAuthor(target.value)}>
-          </input>
-        </div>
-        <div>
-          url:
-          <input 
-          type="text" 
-          name="url" 
-          value={url}
-          onChange={({ target }) => setUrl(target.value)}>
-          </input>
-        </div>
-        <button type="submit">submit</button>
-      </form>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
-    </div>
-  )
-}
-
-const ErrorNotification = ({ message }) => {
-  if (message === null) {
-    return null
-  }
-
-  return (
-    <div className='error'>
-      {message}
-    </div>
-  )
-}
-
-const Notification = ({ message }) => {
-  if (message === null) {
-    return null
-  }
-
-  return (
-    <div className='notification'>
-      {message}
+      }
     </div>
   )
 }
