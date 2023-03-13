@@ -22,7 +22,7 @@ const App = () => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
     )
-  }, [blogs])
+  }, [])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -31,8 +31,7 @@ const App = () => {
       setUser(user)
       blogService.setToken(user.token)
     }
-  }, []
-  )
+  }, [])
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -88,6 +87,8 @@ const App = () => {
               user={user}
               setNotification={setNotification}
               setErrorMessage={setErrorMessage}
+              setBlogs={setBlogs}
+              blogs={blogs}
             />
           </Togglable>
 

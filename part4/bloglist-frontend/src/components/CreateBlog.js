@@ -1,11 +1,17 @@
-import { useState } from "react"
+import { useState, useEffect} from "react"
 import blogService from '../services/blogs'
 
-const CreateBlog = ({ user, setNotification, setErrorMessage}) => {
+const CreateBlog = ({ user, setNotification, setErrorMessage, blogs, setBlogs}) => {
 
     const [title, setTitle] = useState('')
     const [author, setAuthor] = useState('')
     const [url, setUrl] = useState('')
+
+    useEffect(() => {
+      blogService.getAll().then(initialBlogs => {
+        setBlogs(initialBlogs);
+      });
+    }, [setBlogs])
 
     const handleCreation = async (event) => {
         event.preventDefault()
@@ -16,12 +22,14 @@ const CreateBlog = ({ user, setNotification, setErrorMessage}) => {
             url
           }
     
-          await blogService.create(newBlog)
+          const createdBlog = await blogService.create(newBlog)
     
           blogService.setToken(user.token)
           setAuthor('')
           setTitle('')
           setUrl('')
+
+          setBlogs([...blogs, createdBlog])
     
           setNotification(`Creation succeeded!`)
           setTimeout(() => {
