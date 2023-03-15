@@ -11,6 +11,7 @@ import CreateBlog from './components/CreateBlog'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
+  const [update, setUpdate] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const [notifiction, setNotification] = useState(null)
 
@@ -59,6 +60,7 @@ const App = () => {
   const handleLikeIncrease = async (id, newBlog, blogService) => {
     const updatedBlog = await blogService.update(id, newBlog)
     setBlogs(blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog))
+    setUpdate(!update)
   }
 
   return (
@@ -98,7 +100,7 @@ const App = () => {
           </Togglable>
 
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} handleLikeIncrease={handleLikeIncrease} blogService={blogService}/>
+            <Blog key={blog.id} blog={blog} handleLikeIncrease={handleLikeIncrease} blogService={blogService} update={update} user={user}/>
           )}
         </div>
       }

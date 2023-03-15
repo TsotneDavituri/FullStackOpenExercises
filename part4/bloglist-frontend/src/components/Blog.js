@@ -1,7 +1,7 @@
 import Togglable from "./Togglable"
 import { useState } from "react"
 
-const Blog = ({blog, handleLikeIncrease, blogService}) => {
+const Blog = ({blog, handleLikeIncrease, blogService, user}) => {
   const [likes, setLikes] = useState(blog.likes)
 
   const blogStyle = {
@@ -33,7 +33,7 @@ const Blog = ({blog, handleLikeIncrease, blogService}) => {
           <button onClick={handleLikeClick}>like</button>
         </div>
         <div>
-          {blog.user.name}
+          {user.name}
         </div>
       </Togglable>
     </div>

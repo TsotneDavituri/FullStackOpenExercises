@@ -1,7 +1,7 @@
 import { useState} from "react"
 import blogService from '../services/blogs'
 
-const CreateBlog = ({setNotification, setErrorMessage, blogs, setBlogs}) => {
+const CreateBlog = ({ user, setNotification, setErrorMessage, blogs, setBlogs}) => {
 
     const [title, setTitle] = useState('')
     const [author, setAuthor] = useState('')
@@ -17,7 +17,7 @@ const CreateBlog = ({setNotification, setErrorMessage, blogs, setBlogs}) => {
           }
     
           const createdBlog = await blogService.create(newBlog)
-
+          
           setAuthor('')
           setTitle('')
           setUrl('')
