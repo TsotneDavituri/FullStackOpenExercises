@@ -13,6 +13,7 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
   const [notifiction, setNotification] = useState(null)
+  const [token, setToken] = useState('')
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -45,6 +46,7 @@ const App = () => {
       )
 
       blogService.setToken(user.token)
+      setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -54,6 +56,15 @@ const App = () => {
         setErrorMessage(null)
       }, 5000)
     }
+  }
+
+  const handleLikeIncrease = async (id, newBlog) => {
+    const updatedBlog = await blogService.update(id, newBlog, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    setBlogs(blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog))
   }
 
   return (
@@ -93,7 +104,7 @@ const App = () => {
           </Togglable>
 
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} handleLikeIncrease={handleLikeIncrease} user={user}/>
           )}
         </div>
       }

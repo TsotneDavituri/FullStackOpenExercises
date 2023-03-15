@@ -9,8 +9,8 @@ const CreateBlog = ({ user, setNotification, setErrorMessage, blogs, setBlogs}) 
 
     useEffect(() => {
       blogService.getAll().then(initialBlogs => {
-        setBlogs(initialBlogs);
-      });
+        setBlogs(initialBlogs)
+      })
     }, [setBlogs])
 
     const handleCreation = async (event) => {
