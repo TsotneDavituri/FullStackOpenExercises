@@ -1,9 +1,7 @@
 import Togglable from "./Togglable"
 import { useState } from "react"
-import blogService from '../services/blogs'
 
-
-const Blog = ({blog, handleLikeIncrease, user}) => {
+const Blog = ({blog, handleLikeIncrease, blogService}) => {
   const [likes, setLikes] = useState(blog.likes)
 
   const blogStyle = {
@@ -16,7 +14,7 @@ const Blog = ({blog, handleLikeIncrease, user}) => {
 
   const handleLikeClick = async () => {
     const updatedBlog = { ...blog, likes: likes + 1 }
-    await handleLikeIncrease(blog.id, updatedBlog)
+    await handleLikeIncrease(blog.id, updatedBlog, blogService)
     setLikes(updatedBlog.likes)
   }
 
