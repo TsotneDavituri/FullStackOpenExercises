@@ -19,6 +19,12 @@ const Blog = ({blog, blogService, user, blogs, setBlogs}) => {
     setBlogs(blogs.map(blog => blog.id === returnedBlog.id ? returnedBlog : blog))
   }
 
+  const handleDelete = async () => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+      await blogService.del(blog.id)
+      setBlogs(blogs.filter(b => b.id !== blog.id))
+    }
+  }
 
   return (
     <div style={blogStyle}>
@@ -38,7 +44,7 @@ const Blog = ({blog, blogService, user, blogs, setBlogs}) => {
           {user.name}
         </div>
         <div>
-          <button>remove</button>
+          <button onClick={handleDelete}>remove</button>
         </div>
       </Togglable>
     </div>
