@@ -56,7 +56,7 @@ const App = () => {
     }
   }
 
-  const sortedByLikes = blogs.sort((a,b) => b.likes - a.likes)
+  const sortedByLikes = blogs.sort((a, b) => b.likes - a.likes)
 
   return (
     <div>
@@ -84,7 +84,7 @@ const App = () => {
             }}>logout</button>
           </div>
 
-          <Togglable buttonLabel="new blog">
+          <Togglable buttonLabel="new blog" closingLabel="cancel">
             <CreateBlog
               user={user}
               setNotification={setNotification}
@@ -95,13 +95,13 @@ const App = () => {
           </Togglable>
 
           {sortedByLikes.map(blog =>
-            <Blog 
-            key={blog.id} 
-            blog={blog} 
-            blogService={blogService} 
-            user={user}
-            blogs={blogs}
-            setBlogs={setBlogs}/>
+            <Blog
+              key={blog.id}
+              blog={blog}
+              blogService={blogService}
+              user={user}
+              blogs={blogs}
+              setBlogs={setBlogs} />
           )}
         </div>
       }

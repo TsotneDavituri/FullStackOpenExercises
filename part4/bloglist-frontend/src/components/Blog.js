@@ -29,7 +29,7 @@ const Blog = ({blog, blogService, user, blogs, setBlogs}) => {
   return (
     <div style={blogStyle}>
       {blog.title} {blog.author}
-      <Togglable buttonLabel="view">
+      <Togglable buttonLabel="view" closingLabel="hide">
         <div>
           {blog.url}
         </div>
@@ -44,7 +44,7 @@ const Blog = ({blog, blogService, user, blogs, setBlogs}) => {
           {blog.user.name}
         </div>
         <div>
-          {user.id === blog.user.id ? <button onClick={handleDelete}>remove</button>: null}
+          {user.id === blog.user.id ? <button onClick={handleDelete}>remove</button> : null}
         </div>
       </Togglable>
     </div>
