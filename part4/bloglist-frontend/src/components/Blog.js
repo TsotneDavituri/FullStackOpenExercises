@@ -41,7 +41,7 @@ const Blog = ({blog, blogService, user, blogs, setBlogs}) => {
           <button onClick={handleLike}>like</button>
         </div>
         <div>
-          {user.name}
+          {blog.user.name}
         </div>
         <div>
           <button onClick={handleDelete}>remove</button>
