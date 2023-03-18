@@ -24,13 +24,13 @@ const Blog = ({ blog, user, handleLike, handleDelete }) => {
         </div>
         <div>
           {blog.likes}
-          <button onClick={() => handleLike(blog.id)} >like</button>
+          <button id='likeButton' onClick={() => handleLike(blog.id)} >like</button>
         </div>
         <div>
           {blog.user.name}
         </div>
         <div>
-          {user.id === blog.user.id ? <button onClick={() => handleDelete(blog)}>remove</button> : null}
+          {user.id === blog.user.id ? <button id='removeButton' onClick={() => handleDelete(blog)}>remove</button> : null}
         </div>
       </Togglable>
     </div>

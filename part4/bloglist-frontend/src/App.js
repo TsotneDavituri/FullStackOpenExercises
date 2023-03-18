@@ -111,10 +111,12 @@ const App = () => {
           <ErrorNotification message={errorMessage} />
           <Notification message={notifiction} />
           <div>{user.name} is logged in
-            <button onClick={() => {
-              window.localStorage.removeItem('loggedBlogappUser')
-              window.location.reload()
-            }}>logout</button>
+            <button
+              id='logoutButton'
+              onClick={() => {
+                window.localStorage.removeItem('loggedBlogappUser')
+                window.location.reload()
+              }}>logout</button>
           </div>
 
           <Togglable buttonLabel="new blog" closingLabel="cancel">
