@@ -18,6 +18,9 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
+
+
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
@@ -56,6 +59,20 @@ const App = () => {
     }
   }
 
+  const handleLike = async (id) => {
+    const blogToUpdate = blogs.find(blog => blog.id === id)
+    const updatedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 }
+    const returnedBlog = await blogService.update(id, updatedBlog)
+    setBlogs(blogs.map(blog => blog.id === returnedBlog.id ? returnedBlog : blog))
+  }
+
+  const handleDelete = async (blog) => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+      await blogService.del(blog.id)
+      setBlogs(blogs.filter(b => b.id !== blog.id))
+    }
+  }
+
   const sortedByLikes = blogs.sort((a, b) => b.likes - a.likes)
 
   return (
@@ -86,7 +103,6 @@ const App = () => {
 
           <Togglable buttonLabel="new blog" closingLabel="cancel">
             <CreateBlog
-              user={user}
               setNotification={setNotification}
               setErrorMessage={setErrorMessage}
               setBlogs={setBlogs}
@@ -98,10 +114,9 @@ const App = () => {
             <Blog
               key={blog.id}
               blog={blog}
-              blogService={blogService}
               user={user}
-              blogs={blogs}
-              setBlogs={setBlogs} />
+              handleLike={handleLike}
+              handleDelete={handleDelete}/>
           )}
         </div>
       }

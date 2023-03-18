@@ -1,8 +1,6 @@
 import Togglable from './Togglable'
-import { useState } from 'react'
 
-const Blog = ({ blog, blogService, user, blogs, setBlogs }) => {
-  const [likes, setLikes] = useState(blog.likes)
+const Blog = ({ blog, user, handleLike, handleDelete }) => {
 
   const blogStyle = {
     paddingTop: 10,
@@ -12,23 +10,11 @@ const Blog = ({ blog, blogService, user, blogs, setBlogs }) => {
     marginBottom: 5
   }
 
-  const handleLike = async () => {
-    const updatedBlog = { ...blog, likes: likes + 1 }
-    const returnedBlog = await blogService.update(blog.id, updatedBlog)
-    setLikes(returnedBlog.likes)
-    setBlogs(blogs.map(blog => blog.id === returnedBlog.id ? returnedBlog : blog))
-  }
-
-  const handleDelete = async () => {
-    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
-      await blogService.del(blog.id)
-      setBlogs(blogs.filter(b => b.id !== blog.id))
-    }
-  }
-
   return (
-    <div style={blogStyle}>
-      {blog.title} {blog.author}
+    <div style={blogStyle} className={'blog'}>
+      <div className='authorTitle'>
+        {blog.title} {blog.author}
+      </div>
       <Togglable buttonLabel="view" closingLabel="hide">
         <div>
           {blog.url}
@@ -38,19 +24,17 @@ const Blog = ({ blog, blogService, user, blogs, setBlogs }) => {
         </div>
         <div>
           {blog.likes}
-          <button onClick={handleLike}>like</button>
+          <button onClick={() => handleLike(blog.id)} >like</button>
         </div>
         <div>
           {blog.user.name}
         </div>
         <div>
-          {user.id === blog.user.id ? <button onClick={handleDelete}>remove</button> : null}
+          {user.id === blog.user.id ? <button onClick={() => handleDelete(blog)}>remove</button> : null}
         </div>
       </Togglable>
     </div>
   )
 }
-
-Blog.displayName = 'Blog'
 
 export default Blog
