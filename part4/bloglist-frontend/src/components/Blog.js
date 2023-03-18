@@ -1,13 +1,13 @@
-import Togglable from "./Togglable"
-import { useState } from "react"
+import Togglable from './Togglable'
+import { useState } from 'react'
 
-const Blog = ({blog, blogService, user, blogs, setBlogs}) => {
+const Blog = ({ blog, blogService, user, blogs, setBlogs }) => {
   const [likes, setLikes] = useState(blog.likes)
 
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: 'solid', borderColor: 'blue',
+    border: 'solid', borderColor: 'purple',
     borderWidth: 1,
     marginBottom: 5
   }
@@ -20,10 +20,10 @@ const Blog = ({blog, blogService, user, blogs, setBlogs}) => {
   }
 
   const handleDelete = async () => {
-      if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
-        await blogService.del(blog.id)
-        setBlogs(blogs.filter(b => b.id !== blog.id))
-      }
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+      await blogService.del(blog.id)
+      setBlogs(blogs.filter(b => b.id !== blog.id))
+    }
   }
 
   return (
@@ -37,7 +37,7 @@ const Blog = ({blog, blogService, user, blogs, setBlogs}) => {
           {blog.link}
         </div>
         <div>
-          {blog.likes} 
+          {blog.likes}
           <button onClick={handleLike}>like</button>
         </div>
         <div>
@@ -50,5 +50,7 @@ const Blog = ({blog, blogService, user, blogs, setBlogs}) => {
     </div>
   )
 }
+
+Blog.displayName = 'Blog'
 
 export default Blog
