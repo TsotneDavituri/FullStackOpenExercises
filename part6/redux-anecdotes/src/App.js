@@ -1,11 +1,16 @@
 import { useSelector, useDispatch } from 'react-redux'
+import reducer from './reducers/anecdoteReducer'
+import {createStore} from 'redux'
 
 const App = () => {
   const anecdotes = useSelector(state => state)
   const dispatch = useDispatch()
 
   const vote = (id) => {
-    console.log('vote', id)
+    dispatch({
+      type: 'VOTE',
+      id: id
+    })
   }
 
   return (
@@ -24,7 +29,7 @@ const App = () => {
       )}
       <h2>create new</h2>
       <form>
-        <div><input /></div>
+        <div><input name="anecdote"/></div>
         <button>create</button>
       </form>
     </div>
