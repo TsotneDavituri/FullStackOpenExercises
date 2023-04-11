@@ -3,17 +3,29 @@ import { useField } from './hooks'
 import {
   Routes, Route, Link, useNavigate, useMatch
 } from 'react-router-dom'
+import { Table, Form, Button, Alert, Navbar, Nav } from 'react-bootstrap'
 
 const Menu = () => {
   const padding = {
     paddingRight: 5
   }
   return (
-      <div>
-        <Link style={padding} to="/">anecdotes</Link>
-        <Link style={padding} to="/create">create new</Link>
-        <Link style={padding} to="/about">about</Link>
-      </div>
+    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+    <Navbar.Collapse id="responsive-navbar-nav">
+      <Nav className="me-auto">
+        <Nav.Link>
+          <Link style={padding} to="/">anecdotes</Link>
+        </Nav.Link>
+        <Nav.Link>
+          <Link style={padding} to="/create">create new</Link>
+        </Nav.Link>
+        <Nav.Link>
+          <Link style={padding} to="/about">about</Link>
+        </Nav.Link>
+      </Nav>
+    </Navbar.Collapse>
+  </Navbar>
   )
 }
 
@@ -31,27 +43,35 @@ const Anecdote = ({anecdote}) => {
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
-    <ul>
-      {anecdotes.map(anecdote =>
-        <li key={anecdote.id}>
-          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
-        </li>
-      )}
-    </ul>
+    <Table striped bordered hover size>
+      <tbody>
+        {anecdotes.map(anecdote =>
+          <tr key={anecdote.id}>
+            <td>
+              <Link to={`/anecdotes/${anecdote.id}`} className="text-decoration-none">{anecdote.content}</Link>
+            </td>
+            <td>
+              {anecdote.author}
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </Table >
   </div>
 )
 
 const Notification = ({notification, setNotification}) => {
   setTimeout(() => {
     setNotification(null)
-  }, 5000)
+  }, 10000)
 
   return (
-    (notification &&
-      <div>
+    <div className="container">
+      {(notification && <Alert variant="success">
         {notification}
-      </div>
-    )
+      </Alert>
+      )}
+    </div>
   )
 }
 
@@ -71,9 +91,9 @@ const About = () => (
 
 const Footer = () => (
   <div>
-    Anecdote app for <a href='https://fullstackopen.com/'>Full Stack Open</a>.
+    Anecdote app for <a className="text-decoration-none" href='https://fullstackopen.com/'>Full Stack Open</a>.
 
-    See <a href='https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js'>https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js</a> for the source code.
+    See <a className="text-decoration-none" href='https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js'>https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js</a> for the source code.
   </div>
 )
 
@@ -82,11 +102,9 @@ const CreateNew = (props) => {
   const {reset: resetContent, ...content} = useField('text')
   const {reset: resetAuthor, ...author} = useField('text')
   const {reset: resetInfo, ...info} = useField('text')
-  
 
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleSubmit = (event) => {
+    event.preventDefault()
     props.addNew({
       content: content.value,
       author: author.value,
@@ -105,24 +123,19 @@ const CreateNew = (props) => {
     <div>
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          content
-          <input {...content}/>
-        </div>
-        <div>
-          author
-          <input {...author}/>
-        </div>
-        <div>
-          url for more info
-          <input {...info}/>
-        </div>
-        <button type="submit">create</button>
-        <button type="button" onClick={handleReset}>reset</button>
+        <Form.Group>
+          <Form.Label>content:</Form.Label>
+          <Form.Control {...content} />
+          <Form.Label>author:</Form.Label>
+          <Form.Control {...author} />
+          <Form.Label>url for more info:</Form.Label>
+          <Form.Control {...info} />
+          <Button variant="primary" type="submit">create</Button>
+          <Button variant="secondary" type="button" onClick={handleReset}>reset</Button>
+        </Form.Group>
       </form>
     </div>
   )
-
 }
 
 const App = () => {
@@ -173,7 +186,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className="container">
       <h1>Software anecdotes</h1>
       <Menu />
       <Notification notification={notification} setNotification={setNotification}/>

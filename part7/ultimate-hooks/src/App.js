@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { Container, Table, TableBody, TableRow, TableCell, TableContainer, Paper, Button, TextField } from '@mui/material'
 
 const useField = (type) => {
   const [value, setValue] = useState('')
@@ -19,7 +20,7 @@ const useResource = (baseUrl) => {
   const [resources, setResources] = useState([])
 
   const getAll = async () => {
-    return await axios.get(baseUrl).then(response => { setResources(response.data)})
+    return await axios.get(baseUrl).then(response => { setResources(response.data) })
   }
 
   useEffect(() => {
@@ -55,10 +56,10 @@ const App = () => {
     noteService.create({ content: content.value })
     content.onChange({ target: { value: '' } })
   }
- 
+
   const handlePersonSubmit = (event) => {
     event.preventDefault()
-    personService.create({ name: name.value, number: number.value})
+    personService.create({ name: name.value, number: number.value })
     name.onChange({ target: { value: '' } })
     number.onChange({ target: { value: '' } })
   }
@@ -66,22 +67,46 @@ const App = () => {
   console.log(notes)
 
   return (
-    <div>
+    <Container>
       <h2>notes</h2>
       <form onSubmit={handleNoteSubmit}>
-        <input {...content} />
-        <button>create</button>
+        <TextField label="enter note" {...content} />
+        <Button variant="contained" color="primary">create</Button>
       </form>
-      {notes.map(n => <p key={n.id}>{n.content}</p>)}
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            {notes.map(n => (
+              <TableRow key={n.id}>
+                <TableCell>
+                  <p key={n.id}>{n.content}</p>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       <h2>persons</h2>
       <form onSubmit={handlePersonSubmit}>
-        name <input {...name} /> <br/>
-        number <input {...number} />
-        <button>create</button>
+        <TextField label="name" {...name} /> <br />
+        <TextField label="number" {...number} />
+        <Button variant="contained" color="primary">create</Button>
       </form>
-      {persons.map(n => <p key={n.id}>{n.name} {n.number}</p>)}
-    </div>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            {persons.map(n => (
+              <TableRow key={n.id}>
+                <TableCell>
+                  <p key={n.id}>{n.name} {n.number}</p>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
   )
 }
 
