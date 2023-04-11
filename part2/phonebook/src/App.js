@@ -9,7 +9,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
-  // the next 3 variables hold the state of the notifications, 
+  // the next 3 variables hold the state of the notifications,
   const [changedNumberName, setChangedNumberName] = useState(null)
   const [changedNumber, setChangedNumber] = useState(null)
   const [addNotificationName, setAddNotificationName] = useState(null)
@@ -195,7 +195,7 @@ const FilteredPersonList = (props) => {
   )
 }
 
-const AddNameNotification = ({name}) => {
+const AddNameNotification = ({ name }) => {
   if (name === null) {
     return null
   }
@@ -207,7 +207,7 @@ const AddNameNotification = ({name}) => {
   )
 }
 
-const ChangedNumber = ({number, name}) => {
+const ChangedNumber = ({ number, name }) => {
   if (number === null) {
     return null
   }
@@ -219,14 +219,14 @@ const ChangedNumber = ({number, name}) => {
   )
 }
 
-const ErrorMessage = ({errorMessage}) => {
+const ErrorMessage = ({ errorMessage }) => {
   if (errorMessage === null) {
     return null
   }
 
   return (
     <div className='error'>
-       {errorMessage}
+      {errorMessage}
     </div>
   )
 }
