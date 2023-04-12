@@ -19,9 +19,7 @@ const App = () => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
+    blogService.getAll().then((blogs) => setBlogs(blogs))
   }, [])
 
   useEffect(() => {
@@ -37,12 +35,11 @@ const App = () => {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username, password,
+        username,
+        password,
       })
 
-      window.localStorage.setItem(
-        'loggedBlogappUser', JSON.stringify(user)
-      )
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
 
       blogService.setToken(user.token)
       setUser(user)
@@ -66,7 +63,6 @@ const App = () => {
       setTimeout(() => {
         setNotification(null)
       }, 5000)
-
     } catch (exception) {
       setErrorMessage('wrong request')
       setTimeout(() => {
@@ -76,16 +72,18 @@ const App = () => {
   }
 
   const handleLike = async (id) => {
-    const blogToUpdate = blogs.find(blog => blog.id === id)
+    const blogToUpdate = blogs.find((blog) => blog.id === id)
     const updatedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 }
     const returnedBlog = await blogService.update(id, updatedBlog)
-    setBlogs(blogs.map(blog => blog.id === returnedBlog.id ? returnedBlog : blog))
+    setBlogs(
+      blogs.map((blog) => (blog.id === returnedBlog.id ? returnedBlog : blog))
+    )
   }
 
   const handleDelete = async (blog) => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
       await blogService.del(blog.id)
-      setBlogs(blogs.filter(b => b.id !== blog.id))
+      setBlogs(blogs.filter((b) => b.id !== blog.id))
     }
   }
 
@@ -93,8 +91,7 @@ const App = () => {
 
   return (
     <div>
-
-      {!user &&
+      {!user && (
         <LoginForm
           errorMessage={errorMessage}
           username={username}
@@ -103,38 +100,41 @@ const App = () => {
           handlePasswordChange={({ target }) => setPassword(target.value)}
           handleLogin={handleLogin}
         />
-      }
+      )}
 
-      {user &&
+      {user && (
         <div>
           <h2>blogs</h2>
           <ErrorNotification message={errorMessage} />
           <Notification message={notifiction} />
-          <div>{user.name} is logged in
+          <div>
+            {user.name} is logged in
             <button
-              id='logoutButton'
+              id="logoutButton"
               onClick={() => {
                 window.localStorage.removeItem('loggedBlogappUser')
                 window.location.reload()
-              }}>logout</button>
+              }}
+            >
+              logout
+            </button>
           </div>
 
           <Togglable buttonLabel="new blog" closingLabel="cancel">
-            <CreateBlog
-              createBlog={handleCreation}
-            />
+            <CreateBlog createBlog={handleCreation} />
           </Togglable>
 
-          {sortedByLikes.map(blog =>
+          {sortedByLikes.map((blog) => (
             <Blog
               key={blog.id}
               blog={blog}
               user={user}
               handleLike={handleLike}
-              handleDelete={handleDelete}/>
-          )}
+              handleDelete={handleDelete}
+            />
+          ))}
         </div>
-      }
+      )}
     </div>
   )
 }
