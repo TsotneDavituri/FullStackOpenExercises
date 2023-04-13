@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './index.css'
@@ -9,18 +8,19 @@ import Togglable from './components/Togglable'
 import CreateBlog from './components/CreateBlog'
 import { setNotification } from './reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
+import { initializeBlogs } from './reducers/blogReducer'
+import BlogList from './components/BlogList'
 
 const App = () => {
   const dispatch = useDispatch()
-  const [blogs, setBlogs] = useState([])
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
-  }, [])
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -31,7 +31,7 @@ const App = () => {
     }
   }, [])
 
-  const handleLogin = async (event) => {
+  const handleLogin = async event => {
     event.preventDefault()
     try {
       const user = await loginService.login({
@@ -49,38 +49,6 @@ const App = () => {
       dispatch(setNotification('Wrong credentials', 5, 'error'))
     }
   }
-
-  const handleCreation = async (blogObject) => {
-    try {
-      const createdBlog = await blogService.create(blogObject)
-
-      setBlogs([...blogs, createdBlog])
-
-      dispatch(setNotification('Creation succeeded!', 5, 'success'))
-    } catch (exception) {
-      dispatch(setNotification('Wrong request', 5, 'error'))
-    }
-  }
-
-  const handleLike = async (id) => {
-    const blogToUpdate = blogs.find((blog) => blog.id === id)
-    const updatedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 }
-    const returnedBlog = await blogService.update(id, updatedBlog)
-    setBlogs(
-      blogs.map((blog) => (blog.id === returnedBlog.id ? returnedBlog : blog))
-    )
-  }
-
-  const handleDelete = async (blog) => {
-    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
-      await blogService.del(blog.id)
-      setBlogs(blogs.filter((b) => b.id !== blog.id))
-      dispatch(setNotification('Blog deleted', 5, 'success'))
-    }
-  }
-
-  const sortedByLikes = blogs.sort((a, b) => b.likes - a.likes)
-
   return (
     <div>
       {!user && (
@@ -112,20 +80,10 @@ const App = () => {
               logout
             </button>
           </div>
-
           <Togglable buttonLabel="new blog" closingLabel="cancel">
-            <CreateBlog createBlog={handleCreation} />
+            <CreateBlog />
           </Togglable>
-
-          {sortedByLikes.map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              user={user}
-              handleLike={handleLike}
-              handleDelete={handleDelete}
-            />
-          ))}
+          <BlogList user={user} />
         </div>
       )}
     </div>

@@ -16,25 +16,27 @@ const AnecdoteList = () => {
 
   return (
     <div>
-      {orderedByVotes.map(anecdote =>
+      {orderedByVotes.map(anecdote => (
         <div key={anecdote.id}>
-          <div>
-            {anecdote.content}
-          </div>
+          <div>{anecdote.content}</div>
           <div>
             has {anecdote.votes}
-            <button onClick={() =>  {
-              dispatch(vote(anecdote.id))
-              notifDispatch({ type: 'VOTE', payload: anecdote.content})
-              setTimeout(() => {
-                notifDispatch({ type: 'CLEAR' })
-              }, 5000)
-              }}>vote</button>
+            <button
+              onClick={() => {
+                dispatch(vote(anecdote.id))
+                notifDispatch({ type: 'VOTE', payload: anecdote.content })
+                setTimeout(() => {
+                  notifDispatch({ type: 'CLEAR' })
+                }, 5000)
+              }}
+            >
+              vote
+            </button>
           </div>
         </div>
-      )}
+      ))}
     </div>
-  ) 
+  )
 }
 
 export default AnecdoteList
