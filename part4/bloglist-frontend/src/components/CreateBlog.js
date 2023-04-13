@@ -6,13 +6,13 @@ import blogService from '../services/blogs'
 
 const CreateBlog = () => {
   const dispatch = useDispatch()
-  const blogs = useSelector((state) => state.blogs)
+  const blogs = useSelector(state => state.blogs)
 
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const handleCreation = async (blogObject) => {
+  const handleCreation = async blogObject => {
     try {
       const createdBlog = await blogService.create(blogObject)
 
@@ -24,7 +24,7 @@ const CreateBlog = () => {
     }
   }
 
-  const addBlog = (event) => {
+  const addBlog = event => {
     event.preventDefault()
     handleCreation({
       title,

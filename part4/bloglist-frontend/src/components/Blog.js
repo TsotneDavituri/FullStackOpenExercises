@@ -44,7 +44,7 @@ const Blog = ({ blog, user }) => {
         </div>
         <div>{blog.user.name}</div>
         <div>
-          {user.user.id === blog.user.id ? (
+          {user.id === blog.user.id ? (
             <button id="removeButton" onClick={() => handleDelete(blog)}>
               remove
             </button>

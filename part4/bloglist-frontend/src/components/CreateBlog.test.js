@@ -4,12 +4,11 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import CreateBlog from './CreateBlog'
 
-
 test('The form handler calls the event handler it receives as props', async () => {
   const mockHandler = jest.fn()
   const user = userEvent.setup()
 
-  render(<CreateBlog createBlog={mockHandler}/>)
+  render(<CreateBlog createBlog={mockHandler} />)
 
   const title = screen.getByPlaceholderText('title')
   const author = screen.getByPlaceholderText('author')
@@ -26,5 +25,4 @@ test('The form handler calls the event handler it receives as props', async () =
   expect(mockHandler.mock.calls[0][0].title).toBe('testing the title form...')
   expect(mockHandler.mock.calls[0][0].author).toBe('testing the author form...')
   expect(mockHandler.mock.calls[0][0].url).toBe('testing the url form...')
-
 })

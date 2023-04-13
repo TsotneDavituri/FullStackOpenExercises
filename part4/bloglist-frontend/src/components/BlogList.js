@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux'
 import Blog from './Blog'
 
-const BlogList = user => {
-  console.log(user)
+const BlogList = () => {
   const blogs = useSelector(state => state.blogs)
+  const user = useSelector(state => state.login.user)
 
   const sortedByLikes = [...blogs].sort((a, b) => b.likes - a.likes)
 

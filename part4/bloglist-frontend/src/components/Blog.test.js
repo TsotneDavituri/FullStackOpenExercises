@@ -4,11 +4,9 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
-
 test('Displaying a blog renders the blogs Title and Author', () => {
-
   const loggedUser = {
-    id: '1234'
+    id: '1234',
   }
 
   const testBlog = {
@@ -19,11 +17,11 @@ test('Displaying a blog renders the blogs Title and Author', () => {
     user: {
       username: 'superuser',
       name: 'root',
-      id: '123'
-    }
+      id: '123',
+    },
   }
 
-  const { container } = render(<Blog blog={testBlog} user={loggedUser}/>)
+  const { container } = render(<Blog blog={testBlog} user={loggedUser} />)
 
   const div = container.querySelector('.authorTitle')
   const url = screen.queryByText('https://www.wizardingworld.com/')
@@ -35,9 +33,8 @@ test('Displaying a blog renders the blogs Title and Author', () => {
 })
 
 test('Clicking the view button reveals the URL and number of likes', async () => {
-
   const loggedUser = {
-    id: '1234'
+    id: '1234',
   }
 
   const testBlog = {
@@ -48,11 +45,11 @@ test('Clicking the view button reveals the URL and number of likes', async () =>
     user: {
       username: 'superuser',
       name: 'root',
-      id: '123'
-    }
+      id: '123',
+    },
   }
 
-  render(<Blog blog={testBlog} user={loggedUser}/>)
+  render(<Blog blog={testBlog} user={loggedUser} />)
 
   const user = userEvent.setup()
   const button = screen.getByText('view')
@@ -65,9 +62,8 @@ test('Clicking the view button reveals the URL and number of likes', async () =>
 })
 
 test('Clicking the like button twice, calls the event handler twice', async () => {
-
   const loggedUser = {
-    id: '1234'
+    id: '1234',
   }
 
   const testBlog = {
@@ -78,13 +74,13 @@ test('Clicking the like button twice, calls the event handler twice', async () =
     user: {
       username: 'superuser',
       name: 'root',
-      id: '123'
-    }
+      id: '123',
+    },
   }
 
   const mockHandler = jest.fn()
 
-  render(<Blog blog={testBlog} user={loggedUser} handleLike={mockHandler}/>)
+  render(<Blog blog={testBlog} user={loggedUser} handleLike={mockHandler} />)
 
   const user = userEvent.setup()
   const viewButton = screen.getByText('view')
@@ -96,5 +92,4 @@ test('Clicking the like button twice, calls the event handler twice', async () =
   await user.click(likeButton)
 
   expect(mockHandler.mock.calls).toHaveLength(2)
-
 })
