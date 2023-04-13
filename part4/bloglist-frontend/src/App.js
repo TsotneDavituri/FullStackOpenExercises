@@ -4,15 +4,15 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import './index.css'
 import Notification from './components/Notification'
-import ErrorNotification from './components/ErrorNotification'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import CreateBlog from './components/CreateBlog'
+import { setNotification } from './reducers/notificationReducer'
+import { useDispatch } from 'react-redux'
 
 const App = () => {
+  const dispatch = useDispatch()
   const [blogs, setBlogs] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [notifiction, setNotification] = useState(null)
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -46,10 +46,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      dispatch(setNotification('Wrong credentials', 5, 'error'))
     }
   }
 
@@ -59,15 +56,9 @@ const App = () => {
 
       setBlogs([...blogs, createdBlog])
 
-      setNotification('Creation succeeded!')
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
+      dispatch(setNotification('Creation succeeded!', 5, 'success'))
     } catch (exception) {
-      setErrorMessage('wrong request')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      dispatch(setNotification('Wrong request', 5, 'error'))
     }
   }
 
@@ -84,6 +75,7 @@ const App = () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
       await blogService.del(blog.id)
       setBlogs(blogs.filter((b) => b.id !== blog.id))
+      dispatch(setNotification('Blog deleted', 5, 'success'))
     }
   }
 
@@ -92,21 +84,22 @@ const App = () => {
   return (
     <div>
       {!user && (
-        <LoginForm
-          errorMessage={errorMessage}
-          username={username}
-          password={password}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
-          handleLogin={handleLogin}
-        />
+        <>
+          <Notification />
+          <LoginForm
+            username={username}
+            password={password}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            handleLogin={handleLogin}
+          />
+        </>
       )}
 
       {user && (
         <div>
           <h2>blogs</h2>
-          <ErrorNotification message={errorMessage} />
-          <Notification message={notifiction} />
+          <Notification />
           <div>
             {user.name} is logged in
             <button
