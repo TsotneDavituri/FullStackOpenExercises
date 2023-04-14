@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux'
 import Blog from './Blog'
+import Notification from './Notification'
 
 const BlogList = () => {
   const blogs = useSelector(state => state.blogs)
@@ -9,6 +10,7 @@ const BlogList = () => {
 
   return (
     <>
+      <Notification />
       {sortedByLikes.map(blog => (
         <Blog key={blog.id} blog={blog} user={user} />
       ))}

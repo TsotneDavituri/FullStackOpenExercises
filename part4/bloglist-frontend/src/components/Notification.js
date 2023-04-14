@@ -8,11 +8,7 @@ const Notification = () => {
     return null
   }
 
-  console.log(notification)
-
   const { message, type } = notification
-  console.log(type)
-
   return <div className={type}>{message}</div>
 }
 

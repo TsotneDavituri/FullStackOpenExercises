@@ -4,8 +4,11 @@ import { setUser, setUsername, setPassword } from '../reducers/loginReducer'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 import { setNotification } from '../reducers/notificationReducer'
+import Notification from './Notification'
+import { useNavigate } from 'react-router-dom'
 
 const LoginForm = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const username = useSelector(state => state.login.username)
   const password = useSelector(state => state.login.password)
@@ -32,6 +35,7 @@ const LoginForm = () => {
       dispatch(setUser(user))
       dispatch(setUsername(''))
       dispatch(setPassword(''))
+      navigate('/')
     } catch (exception) {
       dispatch(setNotification('Wrong credentials', 5, 'error'))
     }
@@ -40,6 +44,7 @@ const LoginForm = () => {
   return (
     <div>
       <h2>Log in to application</h2>
+      <Notification />
       <form onSubmit={handleLogin}>
         <div>
           username:

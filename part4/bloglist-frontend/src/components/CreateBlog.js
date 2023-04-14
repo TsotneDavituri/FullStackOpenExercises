@@ -3,8 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setBlogs } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import blogService from '../services/blogs'
+import Notification from './Notification'
+import { useNavigate } from 'react-router-dom'
 
 const CreateBlog = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
 
@@ -35,11 +38,13 @@ const CreateBlog = () => {
     setAuthor('')
     setTitle('')
     setUrl('')
+    navigate('/')
   }
 
   return (
     <>
       <h2>Create new</h2>
+      <Notification />
       <form onSubmit={addBlog}>
         <div>
           title:

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import blogService from '../services/blogs'
 
 const loginSlice = createSlice({
   name: 'login',
@@ -6,6 +7,7 @@ const loginSlice = createSlice({
     username: '',
     password: '',
     user: null,
+    token: '',
   },
   reducers: {
     setUsername: (state, action) => {
@@ -16,6 +18,11 @@ const loginSlice = createSlice({
     },
     setUser: (state, action) => {
       state.user = action.payload
+    },
+    setToken: (state, action) => {
+      state.token = action.payload
+      const token = blogService.setToken(state.token)
+      return token
     },
   },
 })

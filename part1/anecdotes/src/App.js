@@ -1,8 +1,6 @@
 import { useState } from 'react'
 
-const Button = (props) => (
-  <button onClick={props.click}>{props.text}</button>
-)
+const Button = props => <button onClick={props.click}>{props.text}</button>
 
 const App = () => {
   const anecdotes = [
@@ -12,21 +10,19 @@ const App = () => {
     'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
     'Premature optimization is the root of all evil.',
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
-    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.'
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
   ]
-   
+
   function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
+    return Math.floor(Math.random() * max)
   }
   const [selected, setSelected] = useState(0)
-  
-  
+
   const handleClick = () => {
     setSelected(getRandomInt(anecdotes.length))
   }
 
   const [votes, setVotes] = useState(new Uint8Array(anecdotes.length))
-
 
   const copy = [...votes]
 
@@ -44,9 +40,9 @@ const App = () => {
       <div>{anecdotes[selected]}</div>
       <p></p>
       <Button click={increaseVote} text="Vote" />
-      <Button click={handleClick} text="Next Anecdote"/>
+      <Button click={handleClick} text="Next Anecdote" />
       <p></p>
-      
+
       <p></p>
       <h1>Anecdote with the most votes:</h1>
       <p></p>
@@ -56,7 +52,6 @@ const App = () => {
     </div>
   )
 }
-
 
 /* () => getRandomAnecdote(getRandomInt(anecdotes.length)) */
 

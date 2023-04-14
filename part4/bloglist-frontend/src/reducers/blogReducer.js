@@ -26,5 +26,4 @@ export const initializeBlogs = () => {
     dispatch(setBlogs(blogs))
   }
 }
-
 export default blogSlice.reducer
