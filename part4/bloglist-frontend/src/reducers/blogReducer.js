@@ -3,22 +3,21 @@ import blogService from '../services/blogs'
 
 const blogSlice = createSlice({
   name: 'blogs',
-  initialState: [],
+  initialState: {
+    blogs: [],
+    singleBlog: null,
+  },
   reducers: {
     setBlogs: (state, action) => {
-      return action.payload
+      return { ...state, blogs: action.payload }
     },
-    increaseLike: (state, action) => {
-      const id = action.payload
-      const blogToUpdate = state.find(a => a.id === id)
-      const changedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 }
-      blogService.update(id, changedBlog)
-      return state.map(a => (a.id === id ? changedBlog : a))
+    setSingleBlog: (state, action) => {
+      return { ...state, singleBlog: action.payload }
     },
   },
 })
 
-export const { setBlogs, increaseLike } = blogSlice.actions
+export const { setBlogs, setSingleBlog } = blogSlice.actions
 
 export const initializeBlogs = () => {
   return async dispatch => {
@@ -26,4 +25,22 @@ export const initializeBlogs = () => {
     dispatch(setBlogs(blogs))
   }
 }
+
+export const getSingleBlog = id => {
+  return async dispatch => {
+    const blog = await blogService.getBlog(id)
+    dispatch(setSingleBlog(blog))
+  }
+}
+
+export const increaseLike = id => {
+  return async dispatch => {
+    const blogToUpdate = await blogService.getBlog(id)
+    const changedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 }
+    await blogService.update(id, changedBlog)
+    const blogs = await blogService.getAll()
+    dispatch(setBlogs(blogs))
+  }
+}
+
 export default blogSlice.reducer

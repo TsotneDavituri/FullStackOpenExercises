@@ -6,7 +6,7 @@ import Notification from './Notification'
 import { setNotification } from '../reducers/notificationReducer'
 import { useSelector } from 'react-redux'
 
-const UserForm = () => {
+const SingleBlogView = () => {
   const dispatch = useDispatch()
   const { id } = useParams()
   const navigate = useNavigate()
@@ -17,7 +17,7 @@ const UserForm = () => {
     const getUser = async () => {
       try {
         await dispatch(getSingleUser(id))
-        navigate(`/users/${id}`)
+        navigate(`/blogs/${id}`)
       } catch (e) {
         dispatch(setNotification('Invalid id', 5, 'error'))
       }
@@ -43,4 +43,4 @@ const UserForm = () => {
   )
 }
 
-export default UserForm
+export default SingleBlogView

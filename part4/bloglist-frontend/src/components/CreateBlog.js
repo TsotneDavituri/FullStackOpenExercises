@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 const CreateBlog = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const blogs = useSelector(state => state.blogs)
+  const blogs = useSelector(state => state.blogs.blogs)
 
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')

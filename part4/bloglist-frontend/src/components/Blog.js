@@ -6,7 +6,7 @@ import blogService from '../services/blogs'
 
 const Blog = ({ blog, user }) => {
   const dispatch = useDispatch()
-  const blogs = useSelector(state => state.blogs)
+  const blogs = useSelector(state => state.blogs.blogs)
 
   const blogStyle = {
     paddingTop: 10,

@@ -3,7 +3,8 @@ import Blog from './Blog'
 import Notification from './Notification'
 
 const BlogList = () => {
-  const blogs = useSelector(state => state.blogs)
+  const blogs = useSelector(state => state.blogs.blogs)
+  console.log(blogs)
   const user = useSelector(state => state.login.user)
 
   const sortedByLikes = [...blogs].sort((a, b) => b.likes - a.likes)

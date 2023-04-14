@@ -15,9 +15,6 @@ const Menu = () => {
       <Link style={padding} to="/users">
         users
       </Link>
-      <Link style={padding} to="/user">
-        look up user
-      </Link>
     </>
   )
 }
