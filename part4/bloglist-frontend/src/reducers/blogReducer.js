@@ -26,7 +26,7 @@ export const initializeBlogs = () => {
   }
 }
 
-export const getSingleBlog = id => {
+export const setBlog = id => {
   return async dispatch => {
     const blog = await blogService.getBlog(id)
     dispatch(setSingleBlog(blog))
@@ -37,8 +37,10 @@ export const increaseLike = id => {
   return async dispatch => {
     const blogToUpdate = await blogService.getBlog(id)
     const changedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 }
-    await blogService.update(id, changedBlog)
+    const blog = await blogService.update(id, changedBlog)
+    console.log(blog)
     const blogs = await blogService.getAll()
+    dispatch(setSingleBlog(blog))
     dispatch(setBlogs(blogs))
   }
 }

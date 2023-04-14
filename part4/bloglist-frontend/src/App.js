@@ -10,6 +10,7 @@ import LoggedIn from './components/LoggedIn'
 import Users from './components/Users'
 import Menu from './components/Menu'
 import UserForm from './components/UserForm'
+import SingleBlogView from './components/SingleBlogView'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
@@ -47,7 +48,7 @@ const App = () => {
               <Route path="/create" element={<CreateBlog />} />
               <Route path="/users" element={<Users />} />
               <Route path="/users/:id" element={<UserForm />} />
-              <Route path="/blogs/:id" element={<Users />} />
+              <Route path="/blogs/:id" element={<SingleBlogView />} />
             </Routes>
           </>
         )}

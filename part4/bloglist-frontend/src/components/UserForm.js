@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { getSingleUser } from '../reducers/userReducer'
+import { setUser } from '../reducers/userReducer'
 import { useEffect } from 'react'
 import Notification from './Notification'
 import { setNotification } from '../reducers/notificationReducer'
@@ -16,10 +16,10 @@ const UserForm = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        await dispatch(getSingleUser(id))
+        await dispatch(setUser(id))
         navigate(`/users/${id}`)
       } catch (e) {
-        dispatch(setNotification('Invalid id', 5, 'error'))
+        dispatch(setNotification('Invalid user id', 5, 'error'))
       }
     }
 
