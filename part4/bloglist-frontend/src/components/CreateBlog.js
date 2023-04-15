@@ -3,6 +3,7 @@ import { createBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import Notification from './Notification'
 import { useNavigate } from 'react-router-dom'
+import { Form, Button } from 'react-bootstrap'
 
 const CreateBlog = () => {
   const navigate = useNavigate()
@@ -27,32 +28,49 @@ const CreateBlog = () => {
     navigate('/')
   }
 
+  const headerStyle = {
+    fontWeight: 'bold',
+    fontSize: '24px',
+    color: 'navy',
+  }
+
+  const labelStyle = {
+    fontWeight: 'bold',
+    color: 'navy',
+  }
+
   return (
     <>
-      <h2>Create new</h2>
+      <h2 style={headerStyle}>Create new</h2>
       <Notification />
-      <form onSubmit={addBlog}>
-        <div>
-          title:
-          <input id="titleInput" type="text" name="title" placeholder="title" />
-        </div>
-        <div>
-          author:
-          <input
+      <Form onSubmit={addBlog}>
+        <Form.Group>
+          <Form.Label style={labelStyle}>Title:</Form.Label>
+          <Form.Control
+            id="titleInput"
+            type="text"
+            name="title"
+            placeholder="title"
+          />
+          <Form.Label style={labelStyle}>Author:</Form.Label>
+          <Form.Control
             id="authorInput"
             type="text"
             name="author"
             placeholder="author"
           />
-        </div>
-        <div>
-          url:
-          <input id="urlInput" type="text" name="url" placeholder="url" />
-        </div>
-        <button id="submitButton" type="submit">
-          submit
-        </button>
-      </form>
+          <Form.Label style={labelStyle}>Url:</Form.Label>
+          <Form.Control
+            id="urlInput"
+            type="text"
+            name="url"
+            placeholder="url"
+          />
+          <Button color="primary" id="submitButton" type="submit">
+            submit
+          </Button>
+        </Form.Group>
+      </Form>
     </>
   )
 }

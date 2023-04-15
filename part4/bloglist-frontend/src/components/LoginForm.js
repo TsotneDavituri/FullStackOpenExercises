@@ -6,6 +6,7 @@ import blogService from '../services/blogs'
 import { setNotification } from '../reducers/notificationReducer'
 import Notification from './Notification'
 import { useNavigate } from 'react-router-dom'
+import { Form, Button } from 'react-bootstrap'
 
 const LoginForm = () => {
   const navigate = useNavigate()
@@ -41,14 +42,28 @@ const LoginForm = () => {
     }
   }
 
+  const style = {
+    fontWeight: 'bold',
+    fontSize: '24px',
+    color: 'navy',
+  }
+
   return (
     <div>
-      <h2>Log in to application</h2>
+      <h2
+        style={{
+          fontWeight: 'bold',
+          fontSize: '32px',
+          color: '#160527',
+        }}
+      >
+        Log in to application
+      </h2>
       <Notification />
-      <form onSubmit={handleLogin}>
-        <div>
-          username:
-          <input
+      <Form onSubmit={handleLogin}>
+        <Form.Group>
+          <Form.Label style={style}>Username:</Form.Label>
+          <Form.Control
             id="usernameInput"
             type="text"
             placeholder="enter username"
@@ -56,10 +71,8 @@ const LoginForm = () => {
             name="username"
             onChange={({ target }) => dispatch(setUsername(target.value))}
           />
-        </div>
-        <div>
-          password:
-          <input
+          <Form.Label style={style}>Password:</Form.Label>
+          <Form.Control
             id="passwordInput"
             type="password"
             placeholder="enter password"
@@ -67,11 +80,11 @@ const LoginForm = () => {
             value={password}
             onChange={({ target }) => dispatch(setPassword(target.value))}
           />
-        </div>
-        <button id="loginButton" type="submit">
-          login
-        </button>
-      </form>
+          <Button color="primary" id="loginButton" type="submit">
+            login
+          </Button>
+        </Form.Group>
+      </Form>
     </div>
   )
 }

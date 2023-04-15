@@ -11,6 +11,7 @@ import UserList from './components/UserList'
 import Menu from './components/Menu'
 import User from './components/User'
 import SingleBlogView from './components/SingleBlogView'
+import './styles/globalStyles.css'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
@@ -33,12 +34,21 @@ const App = () => {
 
   return (
     <Router>
-      <div className="container">
+      <div className="container" style={{ backgroundColor: '#9fc5e8' }}>
         {!user && <LoginForm />}
         {user && (
           <>
             <div>
-              <h2>Blogs App</h2>
+              <h2
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: '32px',
+                  color: '#160527',
+                }}
+              >
+                Blogs App
+              </h2>
+
               <Menu />
               <LoggedIn />
             </div>

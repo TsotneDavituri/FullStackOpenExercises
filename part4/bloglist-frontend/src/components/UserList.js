@@ -17,19 +17,35 @@ const UserList = () => {
       <Table striped>
         <thead>
           <tr>
-            <th>Users</th>
-            <th>Blogs created</th>
+            <th style={{ fontWeight: 'bold', fontSize: '24px', color: 'navy' }}>
+              Users
+            </th>
+            <th style={{ fontWeight: 'bold', fontSize: '24px', color: 'navy' }}>
+              Blogs created
+            </th>
           </tr>
         </thead>
         <tbody>
           {users &&
-            users.map(user => (
-              <tr key={user.id}>
+            users.map((user, index) => (
+              <tr
+                key={user.id}
+                style={
+                  index % 2 === 0
+                    ? { backgroundColor: '#9fc5e8' }
+                    : { backgroundColor: '#b2d2ea' }
+                }
+              >
                 <td>
-                  <Link to={`/users/${user.id}`}>{user.name}</Link>
+                  <Link
+                    style={{ textDecoration: 'none' }}
+                    to={`/users/${user.id}`}
+                  >
+                    {user.name}
+                  </Link>
                   {console.log(user.id)}
                 </td>
-                <td>{user.blogs.length}</td>
+                <td style={{ color: 'navy' }}>{user.blogs.length}</td>
               </tr>
             ))}
         </tbody>
