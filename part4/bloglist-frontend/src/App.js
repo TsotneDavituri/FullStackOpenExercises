@@ -7,9 +7,9 @@ import { setUser, setToken } from './reducers/loginReducer'
 import CreateBlog from './components/CreateBlog'
 import BlogList from './components/BlogList'
 import LoggedIn from './components/LoggedIn'
-import Users from './components/Users'
+import UserList from './components/UserList'
 import Menu from './components/Menu'
-import UserForm from './components/UserForm'
+import User from './components/User'
 import SingleBlogView from './components/SingleBlogView'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
@@ -46,8 +46,8 @@ const App = () => {
             <Routes>
               <Route path="/" element={<BlogList />} />
               <Route path="/create" element={<CreateBlog />} />
-              <Route path="/users" element={<Users />} />
-              <Route path="/users/:id" element={<UserForm />} />
+              <Route path="/users" element={<UserList />} />
+              <Route path="/users/:id" element={<User />} />
               <Route path="/blogs/:id" element={<SingleBlogView />} />
             </Routes>
           </>

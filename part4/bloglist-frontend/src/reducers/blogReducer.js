@@ -38,10 +38,7 @@ export const increaseLike = id => {
     const blogToUpdate = await blogService.getBlog(id)
     const changedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 }
     const blog = await blogService.update(id, changedBlog)
-    console.log(blog)
-    const blogs = await blogService.getAll()
     dispatch(setSingleBlog(blog))
-    dispatch(setBlogs(blogs))
   }
 }
 

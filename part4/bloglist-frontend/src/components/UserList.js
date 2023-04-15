@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAllUsers } from '../reducers/userReducer'
 import { Link } from 'react-router-dom'
 
-const Users = () => {
+const UserList = () => {
   const dispatch = useDispatch()
   const users = useSelector(state => state.users.users)
 
@@ -26,6 +26,7 @@ const Users = () => {
               <tr key={user.id}>
                 <td>
                   <Link to={`/users/${user.id}`}>{user.name}</Link>
+                  {console.log(user.id)}
                 </td>
                 <td>{user.blogs.length}</td>
               </tr>
@@ -36,4 +37,4 @@ const Users = () => {
   )
 }
 
-export default Users
+export default UserList

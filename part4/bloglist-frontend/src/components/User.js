@@ -6,7 +6,7 @@ import Notification from './Notification'
 import { setNotification } from '../reducers/notificationReducer'
 import { useSelector } from 'react-redux'
 
-const UserForm = () => {
+const User = () => {
   const dispatch = useDispatch()
   const { id } = useParams()
   const navigate = useNavigate()
@@ -16,8 +16,7 @@ const UserForm = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        await dispatch(setUser(id))
-        navigate(`/users/${id}`)
+        dispatch(setUser(id))
       } catch (e) {
         dispatch(setNotification('Invalid user id', 5, 'error'))
       }
@@ -31,7 +30,8 @@ const UserForm = () => {
       {user && (
         <>
           <Notification />
-          <h2>{user.name}</h2>
+          <h2>Username: {user.name}</h2>
+          <h2>Added blogs</h2>
           <ul>
             {user.blogs.map(blog => (
               <li key={blog.id}>{blog.title}</li>
@@ -43,4 +43,4 @@ const UserForm = () => {
   )
 }
 
-export default UserForm
+export default User
