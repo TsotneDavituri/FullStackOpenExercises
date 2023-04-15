@@ -1,43 +1,29 @@
-import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { setBlogs } from '../reducers/blogReducer'
+import { useDispatch } from 'react-redux'
+import { createBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
-import blogService from '../services/blogs'
 import Notification from './Notification'
 import { useNavigate } from 'react-router-dom'
 
 const CreateBlog = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const blogs = useSelector(state => state.blogs.blogs)
-
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
 
   const handleCreation = async blogObject => {
     try {
-      const createdBlog = await blogService.create(blogObject)
-
-      dispatch(setBlogs([...blogs, createdBlog]))
-
+      dispatch(createBlog(blogObject))
       dispatch(setNotification('Creation succeeded!', 5, 'success'))
     } catch (exception) {
       dispatch(setNotification('Wrong request', 5, 'error'))
     }
   }
 
-  const addBlog = event => {
+  const addBlog = async event => {
     event.preventDefault()
-    handleCreation({
-      title,
-      author,
-      url,
+    await handleCreation({
+      title: event.target.title.value,
+      author: event.target.author.value,
+      url: event.target.url.value,
     })
-
-    setAuthor('')
-    setTitle('')
-    setUrl('')
     navigate('/')
   }
 
@@ -48,14 +34,7 @@ const CreateBlog = () => {
       <form onSubmit={addBlog}>
         <div>
           title:
-          <input
-            id="titleInput"
-            type="text"
-            name="title"
-            value={title}
-            placeholder="title"
-            onChange={({ target }) => setTitle(target.value)}
-          ></input>
+          <input id="titleInput" type="text" name="title" placeholder="title" />
         </div>
         <div>
           author:
@@ -63,21 +42,12 @@ const CreateBlog = () => {
             id="authorInput"
             type="text"
             name="author"
-            value={author}
             placeholder="author"
-            onChange={({ target }) => setAuthor(target.value)}
-          ></input>
+          />
         </div>
         <div>
           url:
-          <input
-            id="urlInput"
-            type="text"
-            name="url"
-            value={url}
-            placeholder="url"
-            onChange={({ target }) => setUrl(target.value)}
-          ></input>
+          <input id="urlInput" type="text" name="url" placeholder="url" />
         </div>
         <button id="submitButton" type="submit">
           submit

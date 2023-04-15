@@ -32,9 +32,11 @@ const User = () => {
           <Notification />
           <h2>Username: {user.name}</h2>
           <h2>Added blogs</h2>
-          <ul>
+          <ul className="list-group">
             {user.blogs.map(blog => (
-              <li key={blog.id}>{blog.title}</li>
+              <li className="list-group-item" key={blog.id}>
+                {blog.title}
+              </li>
             ))}
           </ul>
         </>

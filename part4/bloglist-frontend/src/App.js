@@ -33,7 +33,7 @@ const App = () => {
 
   return (
     <Router>
-      <div>
+      <div className="container">
         {!user && <LoginForm />}
         {user && (
           <>
