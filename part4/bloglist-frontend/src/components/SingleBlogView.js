@@ -37,7 +37,7 @@ const SingleBlogView = () => {
     const content = event.target.comment.value
 
     event.target.comment.value = ''
-    dispatch(createComment({ content: content, blog: blog.id }))
+    dispatch(createComment({ content: content }, blog.id))
   }
 
   return (

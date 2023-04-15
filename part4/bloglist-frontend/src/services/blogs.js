@@ -25,13 +25,14 @@ const getComments = async id => {
   return response.data
 }
 
-const createComment = async (newComment, id) => {
+const createComment = async (content, id) => {
   const config = {
     headers: { Authorization: token },
   }
+  console.log(id)
   const response = await axios.post(
     `${baseUrl}/${id}/comments`,
-    newComment,
+    content,
     config
   )
   return response.data
