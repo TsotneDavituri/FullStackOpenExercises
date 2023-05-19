@@ -33,23 +33,23 @@ const argumentParse = (args: string[]): Arguments => {
 };
 
 const calculateDaysTrained = (trainingPeriod: number[]): number => {
-  let counter: number = 0;
+  let daysTrained: number = 0;
   for (let i = 0; i < trainingPeriod.length; i++) {
     if (trainingPeriod[i] !== 0) {
-      counter++;
+      daysTrained++;
     }
   }
-  return counter;
+  return daysTrained;
 };
 
 const calculateAverageHoursTrainedDaily = (
   trainingPeriod: number[]
 ): number => {
-  let sum: number = 0;
+  let hoursTrained: number = 0;
   for (let i = 0; i < trainingPeriod.length; i++) {
-    sum += trainingPeriod[i];
+    hoursTrained += trainingPeriod[i];
   }
-  return sum / trainingPeriod.length;
+  return hoursTrained / trainingPeriod.length;
 };
 
 const determineSuccess = (
