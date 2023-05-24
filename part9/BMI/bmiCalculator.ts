@@ -17,7 +17,7 @@ const parseArguments = (args: string[]): BmiValues => {
   }
 };
 
-const calculateBmi = (heightInCm: number, weightInKg: number): string => {
+export const calculateBmi = (heightInCm: number, weightInKg: number): string => {
   const calculation: number = parseFloat(
     (weightInKg / (heightInCm / 100) ** 2).toFixed(2)
   );
