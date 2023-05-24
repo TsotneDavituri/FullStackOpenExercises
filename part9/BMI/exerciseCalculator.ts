@@ -85,6 +85,8 @@ const describeRating = (rating: number): string => {
     return 'Not bad but you can do better!';
   } else if (rating === 3) {
     return 'Great job!';
+  } else {
+    return 'Unknown rating'
   }
 };
 
