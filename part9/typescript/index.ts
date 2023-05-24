@@ -1,12 +1,20 @@
 import express from 'express'
-const app = express()
+import { calculator } from './calc';
+const app = express();
 
 app.get('/ping', (_req, res: any) => {
-  res.send('pong')
-})
+  res.send('pong');
+});
 
-const PORT = 3003
+app.post('/calculate', (req, res) => {
+  const { value1, value2, op } = req.body;
+
+  const result = calculator(value1, value2, op);
+  res.send({ result });
+});
+
+const PORT = 3003;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+  console.log(`Server running on port ${PORT}`);
+});
