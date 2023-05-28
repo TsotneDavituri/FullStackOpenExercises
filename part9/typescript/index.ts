@@ -1,5 +1,6 @@
-import express from 'express'
+import express from 'express';
 import { calculator } from './calc';
+
 const app = express();
 
 app.get('/ping', (_req, res: any) => {

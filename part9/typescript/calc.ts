@@ -1,6 +1,10 @@
 type Operation = 'multiply' | 'add' | 'divide';
 
-export const calculator = (num1: number, num2: number, operation: Operation): number => {
+export const calculator = (
+  num1: number,
+  num2: number,
+  operation: Operation
+): number => {
   switch (operation) {
     case 'divide':
       if (num2 === 0) throw new Error('cant divide through 0');

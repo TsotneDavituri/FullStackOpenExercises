@@ -12,11 +12,23 @@ interface Arguments {
   dailyTrainingHoursTarget: number;
   trainingPeriod: number[];
 }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const isArrayOfNumbers = (numberArray: any): numberArray is number[] => {
+  if (!Array.isArray(numberArray)) {
+    return false;
+  }
+  for (const num of numberArray) {
+    if (typeof num !== 'number') {
+      return false;
+    }
+  }
+  return true;
+};
 
 const argumentParse = (args: string[]): Arguments => {
   if (args.length < 4) throw new Error('Not enough arguments');
 
-  let trainingDaysArray: number[] = [];
+  const trainingDaysArray: number[] = [];
   for (let i = 2; i < args.length; i++) {
     if (isNaN(Number(args[i]))) {
       throw new Error('You didnt input numbers!');
@@ -33,7 +45,7 @@ const argumentParse = (args: string[]): Arguments => {
 };
 
 const calculateDaysTrained = (trainingPeriod: number[]): number => {
-  let daysTrained: number = 0;
+  let daysTrained = 0;
   for (let i = 0; i < trainingPeriod.length; i++) {
     if (trainingPeriod[i] !== 0) {
       daysTrained++;
@@ -45,7 +57,7 @@ const calculateDaysTrained = (trainingPeriod: number[]): number => {
 const calculateAverageHoursTrainedDaily = (
   trainingPeriod: number[]
 ): number => {
-  let hoursTrained: number = 0;
+  let hoursTrained = 0;
   for (let i = 0; i < trainingPeriod.length; i++) {
     hoursTrained += trainingPeriod[i];
   }
@@ -86,11 +98,11 @@ const describeRating = (rating: number): string => {
   } else if (rating === 3) {
     return 'Great job!';
   } else {
-    return 'Unknown rating'
+    return 'Unknown rating';
   }
 };
 
-const calculateExercises = (
+export const calculateExercises = (
   trainingPeriod: number[],
   dailyTrainingHoursTarget: number
 ): TrainingData => {
