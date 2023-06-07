@@ -1,16 +1,16 @@
 import { CoursePartsArray } from '../types'
 
-const Content = (props: CoursePartsArray) => {
+const Content = ({ courseParts }: CoursePartsArray) => {
   return (
     <>
       <p>
-        {props.courseParts[0].name} {props.courseParts[0].exerciseCount}
+        {courseParts[0].name} {courseParts[0].exerciseCount}
       </p>
       <p>
-        {props.courseParts[1].name} {props.courseParts[1].exerciseCount}
+        {courseParts[1].name} {courseParts[1].exerciseCount}
       </p>
       <p>
-        {props.courseParts[2].name} {props.courseParts[2].exerciseCount}
+        {courseParts[2].name} {courseParts[2].exerciseCount}
       </p>
     </>
   )
