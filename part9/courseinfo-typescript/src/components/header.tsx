@@ -1,7 +1,7 @@
-import { CourseNameProps } from '../types'
+import { CourseName } from '../types'
 
-const Header = ({ courseName }: CourseNameProps) => {
-  return <h1>{courseName}</h1>
+const Header = ({ name }: CourseName) => {
+  return <h1>{name}</h1>
 }
 
 export default Header

@@ -1,12 +1,33 @@
-export interface CoursePartProps {
+interface CoursePartBase {
   name: string
   exerciseCount: number
 }
 
-export interface CoursePartsArray {
-  courseParts: CoursePartProps[]
+interface CoursePartBasic extends CoursePartBase {
+  description: string
+  kind: 'basic'
 }
 
-export interface CourseNameProps {
-  courseName: string
+interface CoursePartGroup extends CoursePartBase {
+  groupProjectCount: number
+  kind: 'group'
 }
+
+interface CoursePartBackground extends CoursePartBase {
+  description: string
+  backgroundMaterial: string
+  kind: 'background'
+}
+
+export interface CourseName {
+  name: string
+}
+
+export interface CoursePartArray {
+  courses: CoursePart[]
+}
+
+export type CoursePart =
+  | CoursePartBasic
+  | CoursePartGroup
+  | CoursePartBackground
