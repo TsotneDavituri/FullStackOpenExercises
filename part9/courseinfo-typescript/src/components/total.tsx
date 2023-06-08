@@ -1,4 +1,4 @@
-import { CoursePartArray } from '../types'
+import { CoursePartArray } from '../types';
 
 const Total = ({ courses }: CoursePartArray) => {
   return (
@@ -6,6 +6,6 @@ const Total = ({ courses }: CoursePartArray) => {
       Number of exercises:{' '}
       {courses.reduce((carry, part) => carry + part.exerciseCount, 0)}
     </h3>
-  )
-}
-export default Total
+  );
+};
+export default Total;

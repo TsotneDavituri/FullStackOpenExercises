@@ -1,13 +1,13 @@
-import { CoursePart } from '../types'
+import { CoursePart } from '../types';
 
 interface PartProps {
-  coursePart: CoursePart
+  coursePart: CoursePart;
 }
 
 const Part = ({ coursePart }: PartProps) => {
   const cursive = {
     fontStyle: 'italic',
-  }
+  };
 
   switch (coursePart.kind) {
     case 'basic':
@@ -18,7 +18,7 @@ const Part = ({ coursePart }: PartProps) => {
           </h3>
           <div style={cursive}>{coursePart.description}</div>
         </>
-      )
+      );
     case 'group':
       return (
         <>
@@ -27,7 +27,7 @@ const Part = ({ coursePart }: PartProps) => {
           </h3>
           <div>project exercises: {coursePart.groupProjectCount}</div>
         </>
-      )
+      );
     case 'background':
       return (
         <>
@@ -37,7 +37,7 @@ const Part = ({ coursePart }: PartProps) => {
           <div style={cursive}>{coursePart.description}</div>
           <div>{coursePart.backgroundMaterial}</div>
         </>
-      )
+      );
 
     case 'special':
       return (
@@ -48,10 +48,10 @@ const Part = ({ coursePart }: PartProps) => {
           <div style={cursive}>{coursePart.description}</div>
           <div>required skills: {coursePart.requirements.join(', ')}</div>
         </>
-      )
+      );
     default:
-      return null
+      return null;
   }
-}
+};
 
-export default Part
+export default Part;

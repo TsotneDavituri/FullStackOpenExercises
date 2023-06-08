@@ -1,5 +1,5 @@
-import { CoursePartArray } from '../types'
-import Part from './part'
+import { CoursePartArray } from '../types';
+import Part from './part';
 
 const Content = ({ courses }: CoursePartArray) => {
   return (
@@ -8,7 +8,7 @@ const Content = ({ courses }: CoursePartArray) => {
         <Part key={index} coursePart={course} />
       ))}
     </>
-  )
-}
+  );
+};
 
-export default Content
+export default Content;

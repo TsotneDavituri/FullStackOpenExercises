@@ -1,10 +1,10 @@
-import Header from './components/header'
-import Content from './components/content'
-import Total from './components/total'
-import { CoursePart } from './types'
+import Header from './components/header';
+import Content from './components/content';
+import Total from './components/total';
+import { CoursePart } from './types';
 
 const App = () => {
-  const courseName = 'Half Stack application development'
+  const courseName = 'Half Stack application development';
   const courseParts: CoursePart[] = [
     {
       name: 'Fundamentals',
@@ -45,7 +45,7 @@ const App = () => {
       requirements: ['nodejs', 'jest'],
       kind: 'special',
     },
-  ]
+  ];
 
   return (
     <div>
@@ -53,7 +53,7 @@ const App = () => {
       <Content courses={courseParts} />
       <Total courses={courseParts} />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
