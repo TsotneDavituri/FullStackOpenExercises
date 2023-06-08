@@ -2,10 +2,10 @@ import { CoursePartArray } from '../types'
 
 const Total = ({ courses }: CoursePartArray) => {
   return (
-    <p>
-      Number of exercises{' '}
+    <h3>
+      Number of exercises:{' '}
       {courses.reduce((carry, part) => carry + part.exerciseCount, 0)}
-    </p>
+    </h3>
   )
 }
 export default Total
