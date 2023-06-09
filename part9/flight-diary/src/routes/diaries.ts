@@ -12,7 +12,7 @@ const router = express.Router();
 router.use(cors());
 
 router.get('/', (_req, res) => {
-  res.send(diaryService.getNonSensitiveEntries());
+  res.send(diaryService.getEntries());
 });
 
 router.get('/:id', (req, res) => {
