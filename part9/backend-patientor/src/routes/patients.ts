@@ -4,7 +4,14 @@ import toNewPatientEntry from '../utils';
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-  res.send(patientsService.entriesWithoutSsn());
+  res.send(patientsService.getEntries());
+});
+
+router.get('/:id', (_req, res) => {
+  const findPatient = patientsService
+    .getEntries()
+    .find(p => p.id === _req.params.id);
+  res.send(findPatient);
 });
 
 router.post('/', (_req, res) => {
