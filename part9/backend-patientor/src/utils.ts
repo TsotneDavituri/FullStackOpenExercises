@@ -1,5 +1,4 @@
 import { Gender, NewPatientEntry } from './types';
-
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
 };
@@ -58,7 +57,8 @@ const toNewPatientEntry = (object: unknown): NewPatientEntry => {
     'dateOfBirth' in object &&
     'ssn' in object &&
     'gender' in object &&
-    'occupation' in object
+    'occupation' in object &&
+    'entries' in object
   ) {
     const newPatient: NewPatientEntry = {
       name: parseName(object.name),
