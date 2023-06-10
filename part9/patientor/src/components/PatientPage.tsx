@@ -1,5 +1,8 @@
-import { Patient, Diagnosis } from '../types';
+import { Patient, Diagnosis, Entry } from '../types';
 import { useParams } from 'react-router-dom';
+import HospitalEntryComponent from './HospitalEntryComponent';
+import HealthCheckEntryComponent from './HealthCheckEntryComponent';
+import OccupationalHealthcareEntryComponent from './OccupationalHealthcareEntryComponent';
 
 const PatientPage = ({
   patients,
@@ -11,15 +14,38 @@ const PatientPage = ({
   const id = useParams().id;
   const patient = patients.find(p => p.id === id);
 
-  const renderDiagnosis = (diagnosis: Diagnosis | undefined) => {
-    if (diagnosis) {
-      return (
-        <li key={diagnosis.name}>
-          {diagnosis.code} {diagnosis.name}
-        </li>
-      );
+  const entryDetails = (entry: Entry) => {
+    switch (entry.type) {
+      case 'Hospital':
+        return (
+          <HospitalEntryComponent
+            patients={patients}
+            diagnoses={diagnoses}
+            id={id}
+            entry={entry}
+          />
+        );
+      case 'HealthCheck':
+        return (
+          <HealthCheckEntryComponent
+            patients={patients}
+            diagnoses={diagnoses}
+            id={id}
+            entry={entry}
+          />
+        );
+      case 'OccupationalHealthcare':
+        return (
+          <OccupationalHealthcareEntryComponent
+            patients={patients}
+            diagnoses={diagnoses}
+            id={id}
+            entry={entry}
+          />
+        );
+      default:
+        return null;
     }
-    return null;
   };
 
   if (patient) {
@@ -29,20 +55,10 @@ const PatientPage = ({
         <div>SSN: {patient.ssn}</div>
         <div>Occupation: {patient.occupation}</div>
         <div>Gender: {patient.gender}</div>
-
         <h2>Entries</h2>
         <div>
           {patient.entries.map(entry => (
-            <div key={entry.id}>
-              <div>Date: {entry.date}</div>
-              <div>Description: {entry.description}</div>
-              <ul>
-                {entry.diagnosisCodes?.map(code => {
-                  const diagnosis = diagnoses.find(d => d.code === code);
-                  return renderDiagnosis(diagnosis);
-                })}
-              </ul>
-            </div>
+            <div key={entry.id}>{entryDetails(entry)}</div>
           ))}
         </div>
       </>
