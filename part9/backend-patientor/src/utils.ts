@@ -41,7 +41,7 @@ const parseGender = (gender: unknown): Gender => {
   return gender;
 };
 
-const praseOccupation = (occupation: unknown): string => {
+const parseOccupation = (occupation: unknown): string => {
   if (!isString(occupation)) {
     throw new Error('Incorrect or missing occupation: ' + occupation);
   }
@@ -65,7 +65,7 @@ const toNewPatientEntry = (object: unknown): NewPatientEntry => {
       dateOfBirth: parseDateOfBirth(object.dateOfBirth),
       ssn: parseSsn(object.ssn),
       gender: parseGender(object.gender),
-      occupation: praseOccupation(object.occupation),
+      occupation: parseOccupation(object.occupation),
       entries: [],
     };
 
