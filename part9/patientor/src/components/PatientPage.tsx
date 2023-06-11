@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import HospitalEntryComponent from './HospitalEntryComponent';
 import HealthCheckEntryComponent from './HealthCheckEntryComponent';
 import OccupationalHealthcareEntryComponent from './OccupationalHealthcareEntryComponent';
+import AddPatientEntryForm from './AddPatientEntryForm';
 
 const PatientPage = ({
   patients,
@@ -55,6 +56,7 @@ const PatientPage = ({
         <div>SSN: {patient.ssn}</div>
         <div>Occupation: {patient.occupation}</div>
         <div>Gender: {patient.gender}</div>
+        <AddPatientEntryForm />
         <h2>Entries</h2>
         <div>
           {patient.entries.map(entry => (

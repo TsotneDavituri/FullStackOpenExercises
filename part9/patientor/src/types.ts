@@ -18,12 +18,12 @@ interface BaseEntry {
   diagnosisCodes?: Array<Diagnosis['code']>;
 }
 
-interface Discharge {
+export interface Discharge {
   date: string;
   criteria: string;
 }
 
-interface SickLeave {
+export interface SickLeave {
   startDate: string;
   endDate: string;
 }
@@ -48,6 +48,12 @@ export interface OccupationalHealthcareEntry extends BaseEntry {
   type: 'OccupationalHealthcare';
   sickLeave?: SickLeave;
   employerName: string;
+}
+
+export enum EntryTypes {
+  hospital = 'Hospital',
+  occupationalHealthcare = 'OccupationalHealthcare',
+  healthCheck = 'HealthCheck',
 }
 
 export type Entry =
