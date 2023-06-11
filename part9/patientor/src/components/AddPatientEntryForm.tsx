@@ -223,11 +223,10 @@ const AddPatientEntryForm = ({
           </>
         ) : null}
         {entryType === EntryTypes.healthCheck ? (
-          <FormControl fullWidth>
-            <InputLabel id="health-check-rating-label">
-              Health check rating
-            </InputLabel>
+          <>
+            <h3>Health check rating: </h3>
             <Select
+              fullWidth
               labelId="health-check-rating-label"
               value={healthCheckRating}
               onChange={({ target }) =>
@@ -235,11 +234,11 @@ const AddPatientEntryForm = ({
               }
             >
               <MenuItem value={0}>Healthy</MenuItem>
-              <MenuItem value={1}>LowRisk</MenuItem>
-              <MenuItem value={2}>HighRisk</MenuItem>
-              <MenuItem value={3}>CriticalRisk</MenuItem>
+              <MenuItem value={1}>Low Risk</MenuItem>
+              <MenuItem value={2}>High Risk</MenuItem>
+              <MenuItem value={3}>Critical Risk</MenuItem>
             </Select>
-          </FormControl>
+          </>
         ) : null}
         {entryType === EntryTypes.occupationalHealthcare ? (
           <>
