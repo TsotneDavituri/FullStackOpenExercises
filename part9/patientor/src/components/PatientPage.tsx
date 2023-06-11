@@ -4,6 +4,8 @@ import HospitalEntryComponent from './HospitalEntryComponent';
 import HealthCheckEntryComponent from './HealthCheckEntryComponent';
 import OccupationalHealthcareEntryComponent from './OccupationalHealthcareEntryComponent';
 import AddPatientEntryForm from './AddPatientEntryForm';
+import { Alert } from '@mui/material';
+import { useState } from 'react';
 
 const PatientPage = ({
   patients,
@@ -14,6 +16,8 @@ const PatientPage = ({
 }) => {
   const id = useParams().id;
   const patient = patients.find(p => p.id === id);
+
+  const [error, setError] = useState<string>();
 
   const entryDetails = (entry: Entry) => {
     switch (entry.type) {
@@ -56,7 +60,12 @@ const PatientPage = ({
         <div>SSN: {patient.ssn}</div>
         <div>Occupation: {patient.occupation}</div>
         <div>Gender: {patient.gender}</div>
-        <AddPatientEntryForm />
+        {error && <Alert severity="error">{error}</Alert>}
+        <AddPatientEntryForm
+          id={id}
+          setError={setError}
+          diagnosesCodes={diagnoses}
+        />
         <h2>Entries</h2>
         <div>
           {patient.entries.map(entry => (

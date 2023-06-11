@@ -1,5 +1,6 @@
-import { SyntheticEvent, useState } from 'react';
-import { Diagnosis } from '../types';
+import { useState, SyntheticEvent } from 'react';
+import { Diagnosis, EntryWithoutId } from '../types';
+import axios from 'axios';
 import {
   TextField,
   Grid,
@@ -7,27 +8,115 @@ import {
   Select,
   MenuItem,
   SelectChangeEvent,
+  FormControl,
+  InputLabel,
+  Chip,
 } from '@mui/material';
 import { EntryTypes } from '../types';
+import patientService from '../services/patients';
 
-const AddPatientEntryForm = () => {
+const AddPatientEntryForm = ({
+  id,
+  setError,
+  diagnosesCodes,
+}: {
+  id: string | undefined;
+  setError: React.Dispatch<React.SetStateAction<string | undefined>>;
+  diagnosesCodes: Diagnosis[];
+}) => {
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
   const [specialist, setSpecialist] = useState('');
-  const [diagnoses, setDiagnoses] = useState<Diagnosis['code']>('');
+  const [diagnoses, setDiagnoses] = useState<string[]>([]);
+
   const [entryType, setEntryType] = useState(EntryTypes.healthCheck);
 
   const [dischargeDate, setDischargeDate] = useState('');
   const [dischargeCriteria, setDischargeCriteria] = useState('');
 
-  const [healthCheckRating, setHealthCheckRating] = useState('');
+  const [healthCheckRating, setHealthCheckRating] = useState(0);
 
   const [employerName, setEmployerName] = useState('');
   const [sickLeaveStartDate, setSickLeaveStartDate] = useState('');
   const [sickLeaveEndDate, setSickLeaveEndDate] = useState('');
 
-  const addEntry = (event: SyntheticEvent) => {
+  const getDiagnosesCodes = diagnosesCodes.map(diagnosis => diagnosis.code);
+
+  const submitNewEntry = async () => {
+    try {
+      switch (entryType) {
+        case EntryTypes.hospital:
+          const hospitalEntry: EntryWithoutId = {
+            date: date,
+            description: description,
+            specialist: specialist,
+            diagnosisCodes: diagnoses,
+            type: entryType,
+            discharge: {
+              date: dischargeDate,
+              criteria: dischargeCriteria,
+            },
+          };
+          await patientService.createEntry(hospitalEntry, id);
+          break;
+        case EntryTypes.healthCheck:
+          const healthCheckEntry: EntryWithoutId = {
+            date: date,
+            description: description,
+            specialist: specialist,
+            diagnosisCodes: diagnoses,
+            type: entryType,
+            healthCheckRating: Number(healthCheckRating),
+          };
+          await patientService.createEntry(healthCheckEntry, id);
+          break;
+        case EntryTypes.occupationalHealthcare:
+          const occupationalHealthcareEntry: EntryWithoutId = {
+            date: date,
+            description: description,
+            specialist: specialist,
+            diagnosisCodes: diagnoses,
+            type: entryType,
+            employerName: employerName,
+            sickLeave: {
+              startDate: sickLeaveStartDate,
+              endDate: sickLeaveEndDate,
+            },
+          };
+          await patientService.createEntry(occupationalHealthcareEntry, id);
+          break;
+      }
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        if (e?.response?.data && typeof e?.response?.data === 'string') {
+          const message = e.response.data.replace(
+            'Something went wrong. Error: ',
+            ''
+          );
+          console.error(message);
+          setError(message);
+          setTimeout(() => {
+            setError('');
+          }, 5000);
+        } else {
+          setError('Unrecognized axios error');
+          setTimeout(() => {
+            setError('');
+          }, 5000);
+        }
+      } else {
+        console.error('Unknown error', e);
+        setError('Unknown error');
+        setTimeout(() => {
+          setError('');
+        }, 5000);
+      }
+    }
+  };
+
+  const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
+    void submitNewEntry();
   };
 
   const onCancel = () => {
@@ -74,7 +163,7 @@ const AddPatientEntryForm = () => {
       </Select>
       <h2>New Entry</h2>
 
-      <form onSubmit={addEntry}>
+      <form onSubmit={handleSubmit}>
         <TextField
           label="Description"
           fullWidth
@@ -82,9 +171,8 @@ const AddPatientEntryForm = () => {
           onChange={({ target }) => setDescription(target.value)}
         />
         <TextField
-          label="Date"
           fullWidth
-          placeholder="YYYY-MM-DD"
+          type="date"
           value={date}
           onChange={({ target }) => setDate(target.value)}
         />
@@ -94,18 +182,34 @@ const AddPatientEntryForm = () => {
           value={specialist}
           onChange={({ target }) => setSpecialist(target.value)}
         />
-        <TextField
-          label="Diagnosis codes"
-          fullWidth
-          value={diagnoses}
-          onChange={({ target }) => setDiagnoses(target.value)}
-        />
+        <FormControl fullWidth>
+          <InputLabel id="diagnosis-codes-label">Diagnosis codes</InputLabel>
+          <Select
+            labelId="diagnosis-codes-label"
+            multiple
+            value={diagnoses}
+            onChange={({ target }) => setDiagnoses(target.value as string[])}
+            renderValue={selected => (
+              <div>
+                {selected.map(value => (
+                  <Chip key={value} label={value} />
+                ))}
+              </div>
+            )}
+          >
+            {getDiagnosesCodes.map(code => (
+              <MenuItem key={code} value={code}>
+                {code}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
         {entryType === EntryTypes.hospital ? (
           <>
+            <h3>Discharge date: </h3>
             <TextField
-              label="Discharge Date"
-              placeholder="YYYY-MM-DD"
+              type="date"
               fullWidth
               value={dischargeDate}
               onChange={({ target }) => setDischargeDate(target.value)}
@@ -119,12 +223,23 @@ const AddPatientEntryForm = () => {
           </>
         ) : null}
         {entryType === EntryTypes.healthCheck ? (
-          <TextField
-            label="Health check rating"
-            fullWidth
-            value={healthCheckRating}
-            onChange={({ target }) => setHealthCheckRating(target.value)}
-          />
+          <FormControl fullWidth>
+            <InputLabel id="health-check-rating-label">
+              Health check rating
+            </InputLabel>
+            <Select
+              labelId="health-check-rating-label"
+              value={healthCheckRating}
+              onChange={({ target }) =>
+                setHealthCheckRating(Number(target.value))
+              }
+            >
+              <MenuItem value={0}>Healthy</MenuItem>
+              <MenuItem value={1}>LowRisk</MenuItem>
+              <MenuItem value={2}>HighRisk</MenuItem>
+              <MenuItem value={3}>CriticalRisk</MenuItem>
+            </Select>
+          </FormControl>
         ) : null}
         {entryType === EntryTypes.occupationalHealthcare ? (
           <>
@@ -134,17 +249,17 @@ const AddPatientEntryForm = () => {
               value={employerName}
               onChange={({ target }) => setEmployerName(target.value)}
             />
+            <h3>Sick leave start date</h3>
             <TextField
-              label="Sick leave start date"
               fullWidth
-              placeholder="YYYY-MM-DD"
+              type="date"
               value={sickLeaveStartDate}
               onChange={({ target }) => setSickLeaveStartDate(target.value)}
             />
+            <h3>Sick leave start date</h3>
             <TextField
-              label="Sick leave end date"
               fullWidth
-              placeholder="YYYY-MM-DD"
+              type="date"
               value={sickLeaveEndDate}
               onChange={({ target }) => setSickLeaveEndDate(target.value)}
             />

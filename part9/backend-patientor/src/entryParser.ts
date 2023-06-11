@@ -16,28 +16,28 @@ const isDate = (date: string): boolean => {
 
 const parseDescription = (description: unknown): string => {
   if (!isString(description)) {
-    throw new Error('Incorrect or missing description: ' + description);
+    throw new Error('Incorrect or missing description ' + description);
   }
   return description;
 };
 
 const parseDate = (date: unknown): string => {
   if (!isString(date) || !isDate(date)) {
-    throw new Error('Incorrect or missing date: ' + date);
+    throw new Error('Incorrect or missing date ' + date);
   }
   return date;
 };
 
 const parseSpecialist = (specialist: unknown): string => {
   if (!isString(specialist)) {
-    throw new Error('Incorrect or missing specialist: ' + specialist);
+    throw new Error('Incorrect or missing specialist ' + specialist);
   }
   return specialist;
 };
 
 const parseEmployerName = (employerName: unknown): string => {
   if (!isString(employerName)) {
-    throw new Error('Incorrect or missing employer name: ' + employerName);
+    throw new Error('Incorrect or missing employer name ' + employerName);
   }
   return employerName;
 };
@@ -84,7 +84,7 @@ const parseHealthCheckRating = (rating: unknown): HealthCheckRating => {
     typeof rating !== 'number' ||
     !Object.values(HealthCheckRating).includes(rating)
   ) {
-    throw new Error('Incorrect or missing HealthCheckRating value');
+    throw new Error('Incorrect or missing HealthCheckRating value ' + rating);
   }
 
   return rating as HealthCheckRating;
